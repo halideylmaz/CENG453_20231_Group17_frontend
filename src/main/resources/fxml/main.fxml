@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="catan.ceng.catanui.controller.CatanController">
+    <center>
+        <!-- Game Board -->
+        <GridPane fx:id="gameBoardPane" alignment="center" hgap="10" vgap="10" BorderPane.alignment="CENTER">
+            <!-- Placeholder for the game board components -->
+
+        </GridPane>
+    </center>
+
+    <left>
+        <!-- Player Information -->
+        <VBox spacing="10" BorderPane.alignment="TOP_LEFT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Label text="Player Information" style="-fx-font-size: 18;"/>
+            <!-- Placeholder for player information components -->
+
+        </VBox>
+    </left>
+
+    <bottom>
+        <!-- Control Panel -->
+        <HBox alignment="CENTER" spacing="10" BorderPane.alignment="BOTTOM_CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button text="Roll Dice" />
+            <!-- Placeholder for other control buttons -->
+            <Button text="Build Road" />
+            <Button text="Build Settlement" />
+            <Button text="Build City" />
+        </HBox>
+    </bottom>
+
+    <top>
+        <!-- Navigation Buttons -->
+        <HBox alignment="CENTER" spacing="10" BorderPane.alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button text="Login" onAction="#showLoginPage"/>
+            <Button text="Sign Up" onAction="#showSignUpPage"/>
+            <Button text="New Game"/>
+            <Button text="Continue"/>
+            <Button text="Pause"/>
+            <Button text="LeaderBoard" />
+
+
+        </HBox>
+    </top>
+
+    <right>
+        <VBox spacing="10" BorderPane.alignment="TOP_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Label text="Resource Information" style="-fx-font-size: 18;"/>
+            <!-- Placeholder for player information components -->
+
+        </VBox>
+    </right>
+</BorderPane>
