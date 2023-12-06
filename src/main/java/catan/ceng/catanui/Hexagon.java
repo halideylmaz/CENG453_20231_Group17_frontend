@@ -5,8 +5,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import javax.swing.tree.VariableHeightLayoutCache;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +52,8 @@ public class Hexagon extends StackPane {
 
         if (number != -1) { // Ignore the number for the desert
             Text numberText = new Text(String.valueOf(number));
-            numberText.setFill(Color.WHITE);
+            numberText.setFill(Color.BLACK);
+            numberText.setFont(new Font("Arial",20));
             content.getChildren().add(numberText);
         }
 
