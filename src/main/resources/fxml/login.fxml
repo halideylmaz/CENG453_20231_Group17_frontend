@@ -20,7 +20,7 @@
     <Label text="Password:"/>
     <PasswordField fx:id="passwordField" />
 
-    <Button text="Login" onAction="#handleLogin"/>
+    <Button text="Login" fx:id="loginButton" onAction="#handleLogin"/>
     <Hyperlink text="Don't have an account? Sign up!" onAction="#switchToSignUp"/>
 
 </VBox>

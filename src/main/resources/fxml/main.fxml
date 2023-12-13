@@ -32,11 +32,10 @@
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <Button text="Roll Dice" />
+            <Button text="Roll Dice" onAction="#handleRollDice"/>
             <!-- Placeholder for other control buttons -->
-            <Button text="Build Road" />
-            <Button text="Build Settlement" />
-            <Button text="Build City" />
+
+
         </HBox>
     </bottom>
 
@@ -48,7 +47,7 @@
             </padding>
             <Button text="Login" onAction="#showLoginPage"/>
             <Button text="Sign Up" onAction="#showSignUpPage"/>
-            <Button text="New Game"/>
+            <Button text="New Game" onAction="#initializeGameBoard"/>
             <Button text="Continue"/>
             <Button text="Pause"/>
             <Button text="LeaderBoard" />
@@ -62,8 +61,6 @@
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <Label text="Resource Information" style="-fx-font-size: 18;"/>
-            <!-- Placeholder for player information components -->
 
         </VBox>
     </right>

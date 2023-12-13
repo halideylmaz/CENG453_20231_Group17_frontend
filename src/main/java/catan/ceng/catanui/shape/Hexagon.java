@@ -1,54 +1,57 @@
-package catan.ceng.catanui;
+package catan.ceng.catanui.shape;
+
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import javax.swing.tree.VariableHeightLayoutCache;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Hexagon extends StackPane {
     private static final double HEXAGON_RADIUS = 39.0;
+    private String resource;
+    private int number;
+    //private List<Line> lines;
     private static final Map<String, String> RESOURCE_IMAGES = createResourceImagesMap();
 
     public Hexagon(String resource, int number) {
+        this.resource=resource;
+        this.number=number;
         setAlignment(Pos.CENTER);
-        getChildren().addAll(createHexagon(), createContent(resource, number));
+        getChildren().addAll(createHexagon(resource), createContent(number));
+
     }
 
-    private Polygon createHexagon() {
+
+
+    private Polygon createHexagon(String resource) {
         Polygon hexagon = new Polygon();
         for (int i = 0; i < 6; i++) {
             double angle = 2.0 * Math.PI / 6 * i;
             double y = HEXAGON_RADIUS * Math.cos(angle);
             double x = HEXAGON_RADIUS * Math.sin(angle);
-            hexagon.setFill(Color.LIGHTGRAY);
+
             hexagon.getPoints().addAll(x, y);
 
+
         }
+        String imageUrl = RESOURCE_IMAGES.get(resource);
+        Image image = new Image(getClass().getResourceAsStream(imageUrl));
+        hexagon.setFill(new ImagePattern(image));
         return hexagon;
     }
 
-    private StackPane createContent(String resource, int number) {
+    private StackPane createContent( int number) {
         StackPane content = new StackPane();
 
-        if (RESOURCE_IMAGES.containsKey(resource)) {
-            String imageUrl = RESOURCE_IMAGES.get(resource);
-            Image image = new Image(getClass().getResourceAsStream(imageUrl));
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(HEXAGON_RADIUS * 1.7);
-            imageView.setFitHeight(HEXAGON_RADIUS *2);
-            content.getChildren().add(imageView);
-        } else {
-
-            Text text = new Text(resource);
-            content.getChildren().add(text);
-        }
 
         if (number != -1) { // Ignore the number for the desert
             Text numberText = new Text(String.valueOf(number));
@@ -72,4 +75,5 @@ public class Hexagon extends StackPane {
 
         return resourceImages;
     }
+
 }

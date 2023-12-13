@@ -1,12 +1,13 @@
 package catan.ceng.catanui.controller;
 
 
-import catan.ceng.catanui.Hexagon;
-import catan.ceng.catanui.HexagonXY;
+import catan.ceng.catanui.shape.Hexagon;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -20,25 +21,34 @@ import java.util.ResourceBundle;
 @Component
 public class CatanController implements Initializable {
     private static final int BOARD_SIZE = 5;
-    private static final int HEXAGON_RADIUS = 50;
+    private static final int HEXAGON_RADIUS = 55;
     @FXML
     private BorderPane mainPane;
 
     @FXML
     public GridPane gameBoardPane;
 
-    private HexagonXY[][] board;
+    private Hexagon[][] board;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeGameBoard();
+        initializeResourceInfo();
+
     }
 
+    private void initializeDices() {
+    }
+
+    private void initializeResourceInfo() {
+    }
+
+    @FXML
     private void initializeGameBoard() {
         Pane hexagonPane = new Pane();
         gameBoardPane.add(hexagonPane, 0, 0);
-        board=new HexagonXY[BOARD_SIZE][BOARD_SIZE];
+        board=new Hexagon[BOARD_SIZE][BOARD_SIZE];
         // Define the resource tiles and their corresponding numbers
         List<String> resources = new ArrayList<>();
         resources.addAll(Collections.nCopies(3, "Hill"));
@@ -46,10 +56,8 @@ public class CatanController implements Initializable {
         resources.addAll(Collections.nCopies(4, "Forest"));
         resources.addAll(Collections.nCopies(4, "Field"));
         resources.addAll(Collections.nCopies(4, "Pasture"));
-        //resources.add("Desert");
 
-        List<Integer> numbers = new ArrayList<>();
-        numbers.addAll(List.of(2, 3, 11, 12, 4, 5, 6,7, 8, 9, 10, 4, 5, 6,7, 8, 9, 10));
+        List<Integer> numbers = new ArrayList<>(List.of(2, 3, 3, 11, 11, 12, 4, 5, 6, 8, 9, 10, 4, 5, 6, 8, 9, 10));
         // Desert has no number
 
         // Shuffle the arrays to randomize resource and number placements
@@ -72,6 +80,12 @@ public class CatanController implements Initializable {
                 row++;
             }
         }
+        ImageView imageViewDie1=new ImageView(new Image(getClass().getResourceAsStream("/images/dice/die6.png")));
+        ImageView imageViewDie2=new ImageView(new Image(getClass().getResourceAsStream("/images/dice/die6.png")));
+
+        gameBoardPane.add(imageViewDie1,1,1);
+        gameBoardPane.add(imageViewDie2,2,1);
+
     }
     private void addHexagon(String resource, int number, int row, int col, Pane hexagonPane) {
         Hexagon hexagon = new Hexagon(resource, number);
@@ -89,22 +103,22 @@ public class CatanController implements Initializable {
 
         double hexagonX;
         if(row==0 || row==4){
-            hexagonX = centerX + (col+2) * hexWidth * 0.75;
+            hexagonX = centerX + (col+2) * hexWidth *0.8;
         }
         else if(row==1 || row==3){
-            hexagonX = centerX + (col+1) * hexWidth * 0.75;
+            hexagonX = centerX + (col+1) * hexWidth * 0.8;
         }
         else {
 
-            hexagonX = centerX + (col+2) * hexWidth * 0.75;
+            hexagonX = centerX + (col+2) * hexWidth *0.8 ;
         }
 
 
         if (row % 2 != 0) {
-            hexagonX += hexWidth * 0.75;
+            hexagonX += hexWidth * 0.8;
         }
 
-        double hexagonY = centerY + row * (hexHeight * 0.75);
+        double hexagonY = centerY + row * (hexHeight * 0.6);
 
 
         hexagon.setLayoutX(hexagonX);
@@ -113,7 +127,7 @@ public class CatanController implements Initializable {
         // Add hexagon to the pane
         hexagonPane.getChildren().add(hexagon);
         //add hexagon and related information to the board array
-        board[row][col]=new HexagonXY(resource,number,hexagonX,hexagonY);
+        board[row][col]=hexagon;
     }
 
     private int calculateCols(int row) {
@@ -133,23 +147,20 @@ public class CatanController implements Initializable {
 
     @FXML
     public void handleRollDice() {
-        // Implement dice rolling
+        /* TODO if player's turn */
+        int die1= (int) (Math.random()*6)+1;
+        int die2= (int) (Math.random()*6)+1;
+
+        ImageView imageViewDie1=new ImageView(new Image(getClass().getResourceAsStream("/images/dice/die"+die1+".png")));
+        ImageView imageViewDie2=new ImageView(new Image(getClass().getResourceAsStream("/images/dice/die"+die2+".png")));
+
+        gameBoardPane.add(imageViewDie1,1,1);
+        gameBoardPane.add(imageViewDie2,2,1);
     }
 
-    @FXML
-    public void handleBuildRoad() {
-        // Implement logic for building roads
-    }
 
-    @FXML
-    public void handleBuildSettlement() {
-        // Implement logic for building settlements
-    }
 
-    @FXML
-    public void handleBuildCity() {
-        // Implement logic for building cities
-    }
+
 
     @FXML
     public void showLoginPage() {
@@ -166,7 +177,7 @@ public class CatanController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFileName));
             Parent page = loader.load();
-            mainPane.setCenter(page);
+            mainPane.setRight(page);
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
