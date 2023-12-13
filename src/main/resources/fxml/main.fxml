@@ -34,9 +34,8 @@
             </padding>
             <Button text="Roll Dice" />
             <!-- Placeholder for other control buttons -->
-            <Button text="Build Road" />
-            <Button text="Build Settlement" />
-            <Button text="Build City" />
+
+
         </HBox>
     </bottom>
 
@@ -48,7 +47,7 @@
             </padding>
             <Button text="Login" onAction="#showLoginPage"/>
             <Button text="Sign Up" onAction="#showSignUpPage"/>
-            <Button text="New Game"/>
+            <Button text="New Game" onAction="#initializeGameBoard"/>
             <Button text="Continue"/>
             <Button text="Pause"/>
             <Button text="LeaderBoard" />
