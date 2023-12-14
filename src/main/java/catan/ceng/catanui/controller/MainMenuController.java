@@ -43,7 +43,7 @@ public class MainMenuController {
 
     @FXML
     private void showLeaderboardPage(ActionEvent event) {
-        // Implement logic to show the leaderboard page
+        SceneLoader.loadFXML("/fxml/leaderboard.fxml");
     }
 
     @FXML
