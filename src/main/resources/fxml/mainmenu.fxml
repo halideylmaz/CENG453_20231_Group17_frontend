@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="catan.ceng.catanui.controller.MainMenuController"
+      alignment="CENTER"
+      spacing="30"
+      style="-fx-background-color: #f0f0f0;">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Login Button -->
+    <Button text="Login" onAction="#showLoginPage" prefWidth="150" style="-fx-font-size: 16; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5;"/>
+
+    <!-- Sign Up Button -->
+    <Button text="Sign Up" onAction="#showSignUpPage" prefWidth="150" style="-fx-font-size: 16; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5;"/>
+
+    <!-- View Leaderboard Button -->
+    <Button text="View Leaderboard" onAction="#showLeaderboardPage" prefWidth="150" style="-fx-font-size: 16; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5;"/>
+
+    <!-- Forgot Password Button -->
+    <Button text="Forgot Password" onAction="#showForgotPasswordPage" prefWidth="150" style="-fx-font-size: 16; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5;"/>
+
+    <!-- Exit Button -->
+    <Button text="Exit" onAction="#exitApplication" prefWidth="150" style="-fx-font-size: 16; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5;"/>
+
+</VBox>

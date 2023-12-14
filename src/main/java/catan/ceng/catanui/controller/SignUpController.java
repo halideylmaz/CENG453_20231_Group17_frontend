@@ -5,10 +5,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import javafx.event.ActionEvent;
+import catan.ceng.catanui.controller.SceneLoader;
 
 @Component
 public class SignUpController {
 
+    SceneLoader SceneLoader = new SceneLoader();
     @FXML
     private TextField usernameField;
 
@@ -29,9 +32,15 @@ public class SignUpController {
     }
 
     @FXML
-    public void switchToLogin() {
+    public void switchToLogin(ActionEvent event) {
 
-        System.out.println("Switching to Login Page...");
+        SceneLoader.loadFXML("/fxml/login.fxml");
+    }
+
+    @FXML
+    public void switchToMainMenu(ActionEvent event) {
+
+        SceneLoader.loadFXML("/fxml/mainmenu.fxml");
     }
 
 }

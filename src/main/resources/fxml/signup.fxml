@@ -3,9 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <VBox fx:id="auth" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="catan.ceng.catanui.controller.SignUpController">
+      fx:controller="catan.ceng.catanui.controller.SignUpController"
+      alignment="CENTER"
+      spacing="30"
+      style="-fx-background-color: #f0f0f0;">
 
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -13,18 +17,29 @@
 
     <Label text="Sign Up" style="-fx-font-size: 18;"/>
 
+    <VBox spacing="10" alignment="CENTER_LEFT">
     <Label text="Username:"/>
     <TextField fx:id="usernameField" />
-
+    </VBox>
+    <VBox spacing="10" alignment="CENTER_LEFT">
     <Label text="Email:"/>
     <TextField fx:id="emailField" />
+    </VBox>
 
+    <VBox spacing="10" alignment="CENTER_LEFT">
     <Label text="Password:"/>
     <PasswordField fx:id="passwordField" />
+    </VBox>
 
 
-
-    <Button text="Sign Up" onAction="#handleSignUp"/>
+    <VBox spacing="10" alignment="CENTER">
+    <Button text="Sign Up" onAction="#handleSignUp" style="-fx-font-size: 12; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5;"/>
     <Hyperlink text="Already have an account? Login!" onAction="#switchToLogin"/>
+    </VBox>
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button text="Back to Main Menu" onAction="#switchToMainMenu"
+                style="-fx-font-size: 12; -fx-min-width: 100; -fx-padding: 10; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-border-radius: 5;"/>
+    </HBox>
 
 </VBox>
