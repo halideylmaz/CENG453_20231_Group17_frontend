@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 
 public class PlayMenuController {
-    private SceneLoader SceneLoader = new SceneLoader();
+    private SceneLoader sceneLoader = new SceneLoader();
 
     @FXML
     private ImageView imageView = new ImageView();
@@ -22,6 +22,7 @@ public class PlayMenuController {
     @FXML
     public void switchtoGame(ActionEvent event) {
         //switch to game scene
+        sceneLoader.loadFXML("/fxml/main.fxml");
     }
 
     @FXML

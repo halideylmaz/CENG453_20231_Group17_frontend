@@ -1,16 +1,18 @@
 package catan.ceng.catanui.entities;
 
-
-import lombok.Data;
-
-@Data
 public class Player {
+    private int resources;
+    // Add other player properties
 
-    private  String username;
-    private Integer score;
-
-    public Player(String username, Integer score) {
-        this.username = username;
-        this.score = score;
+    public Player() {
+        resources = 0;
+        // Initialize other player properties
     }
+
+    public int getResources() {
+        return resources;
+    }
+
 }
+
+// Add methods to modify player state based on game actions
