@@ -179,7 +179,7 @@ public class CatanController implements Initializable {
             Parent page = loader.load();
             mainPane.setRight(page);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception appropriately
+            e.printStackTrace(); // Handle the exception
         }
     }
 }

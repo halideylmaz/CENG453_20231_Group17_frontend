@@ -1,6 +1,6 @@
-package catan.ceng.catanui;
+package catan.ceng.catanui.application;
 
-import catan.ceng.catanui.MainApplication.StageReadyEvent;
+import catan.ceng.catanui.application.MainApplication.StageReadyEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;

@@ -1,5 +1,6 @@
-package catan.ceng.catanui;
+package catan.ceng.catanui.application;
 
+import catan.ceng.catanui.CatanUiApplication;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;

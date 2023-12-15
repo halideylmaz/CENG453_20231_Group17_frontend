@@ -1,5 +1,6 @@
 package catan.ceng.catanui;
 
+import catan.ceng.catanui.application.MainApplication;
 import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

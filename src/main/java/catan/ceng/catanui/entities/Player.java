@@ -13,7 +13,7 @@ public class Player {
 
     private Long id;
     private String username;
-    private String password; /* In BCrpyt encoded form */
+    private String password;
     private Long totalScore;
 
 

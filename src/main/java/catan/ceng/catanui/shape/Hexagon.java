@@ -19,7 +19,7 @@ public class Hexagon extends StackPane {
     private static final double HEXAGON_RADIUS = 39.0;
     private String resource;
     private int number;
-    //private List<Line> lines;
+    private List<Line> lines;
     private static final Map<String, String> RESOURCE_IMAGES = createResourceImagesMap();
 
     public Hexagon(String resource, int number) {
@@ -27,8 +27,10 @@ public class Hexagon extends StackPane {
         this.number=number;
         setAlignment(Pos.CENTER);
         getChildren().addAll(createHexagon(resource), createContent(number));
-
+        lines= new ArrayList<>();
+        
     }
+
 
 
 
