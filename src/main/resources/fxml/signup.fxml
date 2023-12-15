@@ -9,7 +9,7 @@
       fx:controller="catan.ceng.catanui.controller.SignUpController"
       alignment="CENTER"
       spacing="30"
-      style="-fx-background-color: #f0f0f0;">
+      style="-fx-background-color: #eefbfb;">
 
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -33,8 +33,9 @@
 
 
     <VBox spacing="10" alignment="CENTER">
-    <Button text="Sign Up" onAction="#handleSignUp" style="-fx-font-size: 12; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5;"/>
-    <Hyperlink text="Already have an account? Login!" onAction="#switchToLogin"/>
+    <Button text="Sign Up" onAction="#handleSignUp" style="-fx-font-size: 12; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: rgb(82, 168, 57); -fx-text-fill: white; -fx-border-radius: 5;"/>
+        <Label fx:id="errorMessageLabel" textFill="red"/>
+        <Hyperlink text="Already have an account? Login!" onAction="#switchToLogin"/>
     </VBox>
 
     <HBox alignment="CENTER_RIGHT">

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="catan.ceng.catanui.controller.PlayMenuController"
+      alignment="CENTER"
+      spacing="30"
+      style="-fx-background-color: #eefbfb">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    <ImageView fitWidth="250" fitHeight="100">
+        <!-- Use an Image object and specify the path to your image file -->
+        <image>
+            <Image url="/images/catanlogo.png"/>
+        </image>
+    </ImageView>
+    <!-- Play vs bots Button -->
+    <Button text="Play vs Bots" onAction="#switchtoGame" prefWidth="150" style="-fx-font-size: 16; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: rgb(82, 168, 57); -fx-text-fill: white; -fx-border-radius: 5;"/>
+    <Button text="Multiplayer" onAction="#switchtoMatchMaking" prefWidth="150" style="-fx-font-size: 16; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: rgb(82, 168, 57); -fx-text-fill: white; -fx-border-radius: 5;"/>
+    <!-- Exit Button -->
+    <Button text="Exit" onAction="#exitApplication" prefWidth="150" style="-fx-font-size: 16; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: rgb(82, 168, 57); -fx-text-fill: white; -fx-border-radius: 5;"/>
+
+</VBox>

@@ -10,7 +10,7 @@
       fx:controller="catan.ceng.catanui.controller.LeaderboardController"
       alignment="CENTER"
       spacing="20"
-      style="-fx-background-color: #f0f0f0;">
+      style="-fx-background-color: #eefbfb;">
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>

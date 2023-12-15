@@ -8,6 +8,8 @@ import javafx.scene.input.MouseEvent;
 import catan.ceng.catanui.controller.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 import java.io.IOException;
@@ -16,7 +18,16 @@ import java.io.IOException;
 @Component
 public class MainMenuController {
 
-    SceneLoader SceneLoader = new SceneLoader();
+    private SceneLoader SceneLoader = new SceneLoader();
+
+    @FXML
+    private ImageView imageView = new ImageView();
+
+    public void initialize() {
+        // Load the image and set it to the ImageView
+        Image image = new Image(getClass().getResourceAsStream("/images/catanlogo.png"));
+        imageView.setImage(image);
+    }
 
     @FXML
     private void applyHoverStyle(MouseEvent event) {
@@ -49,6 +60,7 @@ public class MainMenuController {
     @FXML
     private void showForgotPasswordPage(ActionEvent event) {
         // Implement logic to show the forgot password page
+        SceneLoader.loadFXML("/fxml/resetpassword.fxml");
     }
 
     @FXML

@@ -10,16 +10,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 
 @Component
 public class LoginController {
-    SceneLoader SceneLoader = new SceneLoader();
+    private SceneLoader SceneLoader = new SceneLoader();
     @FXML
     private TextField usernameField;
 
     @FXML
     private PasswordField passwordField;
+
+    @FXML
+    private Label errorMessageLabel;
 
     @FXML
     public void handleLogin() {
@@ -28,6 +32,25 @@ public class LoginController {
 
         // Implement login
 
+        try{
+            //get response from server
+            boolean loginSuccessful = true;
+            if (!loginSuccessful) {
+                // Show the error message
+                //errorMessageLabel.setText(response.message);
+                errorMessageLabel.setText("Invalid username or password.");
+            } else {
+                // Clear the error message if login is successful
+                errorMessageLabel.setText("");
+                // Proceed with the next steps after successful login
+                // open play scene
+                SceneLoader.loadFXML("/fxml/playmenu.fxml");
+
+            }
+        } catch (Exception e) {
+            // Handle other exceptions
+            errorMessageLabel.setText("An error occurred during login.");
+        }
     }
 
     @FXML
