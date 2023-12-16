@@ -1,13 +1,13 @@
 package catan.ceng.catanui.controller;
 
+import catan.ceng.catanui.entities.Player;
+import catan.ceng.catanui.helper.AlertHelper;
+import catan.ceng.catanui.service.RequestService;
 import javafx.fxml.FXML;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Window;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import javafx.event.ActionEvent;
-import catan.ceng.catanui.controller.SceneLoader;
-import javafx.scene.control.Label;
 
 @Component
 public class SignUpController {
@@ -26,30 +26,54 @@ public class SignUpController {
     private Label errorMessageLabel;
 
     @FXML
+    private Button signUpButton;
+
+    @FXML
     public void handleSignUp() {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String email = emailField.getText();
 
-        // Implement sign-up
-        try{
-            //get response from server
-            boolean registerSuccessful = true;
-            if (!registerSuccessful) {
-                // Show the error message
-                //errorMessageLabel.setText(response.message);
-                errorMessageLabel.setText("Invalid username or password.");
-            } else {
-                // Clear the error message if login is successful
-                errorMessageLabel.setText("");
-                // Proceed with the next steps after successful login
-                // open main menu
-                SceneLoader.loadFXML("/fxml/mainmenu.fxml");
+        Window owner = signUpButton.getScene().getWindow();
+        if (username.isEmpty()) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Please enter your name");
+            return;
+        }
+        if (email.isEmpty()) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Please enter your email id");
+            return;
+        }
 
-            }
-        } catch (Exception e) {
-            // Handle other exceptions
-            errorMessageLabel.setText("An error occurred during login.");
+        if (password.isEmpty()) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Please enter a password");
+            return;
+        }
+
+        if (password.length() < 5) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Your password must have at least 5 characters");
+            return;
+        }
+        // Implement sign-up
+        Player player = new Player();
+        player.setUserName(username);
+        player.setEmail(email);
+        player.setPassword(password);
+
+
+        RequestService restService = new RequestService();
+        boolean registeredUser = restService.register(player);
+
+        if (!registeredUser) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Error",
+                    "Error on sign up please try again!");
+        } else {
+            SceneLoader.loadFXML("/fxml/mainmenu.fxml");
+            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Signed Up, you can login!",
+                    "in");
         }
     }
 

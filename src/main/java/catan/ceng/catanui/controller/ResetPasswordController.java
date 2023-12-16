@@ -1,10 +1,12 @@
 package catan.ceng.catanui.controller;
+import catan.ceng.catanui.entities.GameConstants;
+import catan.ceng.catanui.helper.AlertHelper;
+import catan.ceng.catanui.service.RequestService;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import catan.ceng.catanui.controller.SceneLoader;
+import javafx.stage.Window;
 
 public class ResetPasswordController {
 
@@ -26,55 +28,56 @@ public class ResetPasswordController {
     @FXML
     private VBox emailBox;
 
+    @FXML
+    private Button submitButton;
     private SceneLoader SceneLoader = new SceneLoader();
 
     public void sendResetPasswordEmail() {
-        // Implement logic to send a token to the provided email
-        // Update errorMessageLabel if there's an error
+        String email = emailField.getText();
+        Window owner = submitButton.getScene().getWindow();
 
-        // If no error, reveal the token and password fields
-        try {
-            //get response from server
-            boolean emailSent = true;
-            if (!emailSent) {
-                // Show the error message
-                //errorMessageLabel.setText(response.message);
-                errorMessageLabel.setText("Invalid email.");
-            } else {
-                // Clear the error message if login is successful
-                errorMessageLabel.setText("");
-                // Proceed with the next steps after successful login
-                // open main menu
-                tokenAndPasswordBox.setVisible(true);
-                emailBox.setVisible(false);
-            }
-        } catch (Exception e) {
-            // Handle other exceptions
-            errorMessageLabel.setText("An error occurred during sending email.");
+        if (email.isEmpty()) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Please enter your name");
+            return;
         }
+
+        RequestService restService = new RequestService();
+        boolean resetPassword = restService.sendResetEmail(email);
+
+        if (!resetPassword) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Invalid Email",
+                    "Username or Password is Wrong!");
+        } else {
+            tokenAndPasswordBox.setVisible(true);
+            emailBox.setVisible(false);
+        }
+
 
     }
 
     public void resetPassword() {
         // Implement logic to validate the token and reset the password
         // Update errorMessageLabel if there's an error
-        try{
-            //get response from server
-            boolean resetSuccessful = true;
-            if (!resetSuccessful) {
-                // Show the error message
-                //errorMessageLabel.setText(response.message);
-                errorMessageLabel.setText("Invalid token.");
-            } else {
-                // Clear the error message if login is successful
-                errorMessageLabel.setText("");
-                // Proceed with the next steps after successful login
-                // open main menu
-                SceneLoader.loadFXML("/fxml/login.fxml");
-            }
-        } catch (Exception e) {
-            // Handle other exceptions
-            errorMessageLabel.setText("An error occurred during resetting password.");
+
+        String token = tokenField.getText();
+        String newPassword = newPasswordField.getText();
+        Window owner = submitButton.getScene().getWindow();
+
+        if (token.isEmpty() || newPassword.isEmpty()) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Error",
+                    "Token or Password is empty!");
+            return;
+        }
+
+        RequestService restService = new RequestService();
+        boolean resetPassword = restService.resetPassword(token, newPassword);
+
+        if (!resetPassword) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Error",
+                    "Invalid token");
+        } else {
+            SceneLoader.loadFXML("/fxml/login.fxml");
         }
     }
 
