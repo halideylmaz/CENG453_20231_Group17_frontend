@@ -48,7 +48,7 @@ public class LeaderboardController {
         UserNameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 
         TableColumn<User, Integer> scoreColumn = new TableColumn<>("Score");
-        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
+        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("totalScore"));
 
         leaderboardTable.getColumns().setAll(UserNameColumn, scoreColumn);
     }

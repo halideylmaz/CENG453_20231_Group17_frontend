@@ -1,20 +1,25 @@
-package catan.ceng.catanui;
+package catan.ceng.catanui.shape;
 
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Hexagon extends StackPane {
     private static final double HEXAGON_RADIUS = 39.0;
     private String resource;
     private int number;
+    private List<Line> lines;
     private static final Map<String, String> RESOURCE_IMAGES = createResourceImagesMap();
 
     public Hexagon(String resource, int number) {
@@ -22,7 +27,12 @@ public class Hexagon extends StackPane {
         this.number=number;
         setAlignment(Pos.CENTER);
         getChildren().addAll(createHexagon(resource), createContent(number));
+        lines= new ArrayList<>();
+        
     }
+
+
+
 
     private Polygon createHexagon(String resource) {
         Polygon hexagon = new Polygon();

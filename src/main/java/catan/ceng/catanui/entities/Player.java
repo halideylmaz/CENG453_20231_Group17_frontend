@@ -1,17 +1,25 @@
 package catan.ceng.catanui.entities;
 
+import lombok.*;
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Player {
-    private int resources;
-    // Add other player properties
 
-    public Player() {
-        resources = 0;
-        // Initialize other player properties
+    private Long id;
+    private String username;
+    private String password;
+    private Long totalScore;
+
+    public Player(String username, Long totalScore) {
+        this.username = username;
+        this.totalScore = totalScore;
     }
 
-    public int getResources() {
-        return resources;
-    }
 
 }
 

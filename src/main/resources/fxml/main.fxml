@@ -32,7 +32,7 @@
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <Button text="Roll Dice" />
+            <Button text="Roll Dice" onAction="#handleRollDice"/>
             <!-- Placeholder for other control buttons -->
 
 
@@ -61,8 +61,6 @@
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <Label text="Resource Information" style="-fx-font-size: 18;"/>
-            <!-- Placeholder for player information components -->
 
         </VBox>
     </right>

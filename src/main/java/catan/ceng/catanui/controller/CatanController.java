@@ -1,11 +1,13 @@
 package catan.ceng.catanui.controller;
 
 
-import catan.ceng.catanui.Hexagon;
+import catan.ceng.catanui.shape.Hexagon;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -19,7 +21,7 @@ import java.util.ResourceBundle;
 @Component
 public class CatanController implements Initializable {
     private static final int BOARD_SIZE = 5;
-    private static final int HEXAGON_RADIUS = 50;
+    private static final int HEXAGON_RADIUS = 55;
     @FXML
     private BorderPane mainPane;
 
@@ -34,6 +36,9 @@ public class CatanController implements Initializable {
         initializeGameBoard();
         initializeResourceInfo();
 
+    }
+
+    private void initializeDices() {
     }
 
     private void initializeResourceInfo() {
@@ -75,6 +80,12 @@ public class CatanController implements Initializable {
                 row++;
             }
         }
+        ImageView imageViewDie1=new ImageView(new Image(getClass().getResourceAsStream("/images/dice/die6.png")));
+        ImageView imageViewDie2=new ImageView(new Image(getClass().getResourceAsStream("/images/dice/die6.png")));
+
+        gameBoardPane.add(imageViewDie1,1,1);
+        gameBoardPane.add(imageViewDie2,2,1);
+
     }
     private void addHexagon(String resource, int number, int row, int col, Pane hexagonPane) {
         Hexagon hexagon = new Hexagon(resource, number);
@@ -136,7 +147,15 @@ public class CatanController implements Initializable {
 
     @FXML
     public void handleRollDice() {
-        // Implement dice rolling
+        /* TODO if player's turn */
+        int die1= (int) (Math.random()*6)+1;
+        int die2= (int) (Math.random()*6)+1;
+
+        ImageView imageViewDie1=new ImageView(new Image(getClass().getResourceAsStream("/images/dice/die"+die1+".png")));
+        ImageView imageViewDie2=new ImageView(new Image(getClass().getResourceAsStream("/images/dice/die"+die2+".png")));
+
+        gameBoardPane.add(imageViewDie1,1,1);
+        gameBoardPane.add(imageViewDie2,2,1);
     }
 
 
@@ -160,7 +179,7 @@ public class CatanController implements Initializable {
             Parent page = loader.load();
             mainPane.setRight(page);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception appropriately
+            e.printStackTrace(); // Handle the exception
         }
     }
 }
