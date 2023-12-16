@@ -15,10 +15,6 @@ public class Player {
     private String password;
     private Long totalScore;
 
-    public Player(String username, Long totalScore) {
-        this.username = username;
-        this.totalScore = totalScore;
-    }
 
 
 }

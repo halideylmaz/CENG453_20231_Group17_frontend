@@ -6,31 +6,32 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import catan.ceng.catanui.entities.User;
+import catan.ceng.catanui.entities.Player;
 import catan.ceng.catanui.controller.SceneLoader;
 import javafx.event.ActionEvent;
 import javafx.beans.property.SimpleIntegerProperty;
+import catan.ceng.catanui.entities.GameConstants;
 
 public class LeaderboardController {
 
     private SceneLoader sceneLoader = new SceneLoader();
 
     @FXML
-    private TableView<User> weeklyLeaderboardTable;
+    private TableView<Player> weeklyLeaderboardTable;
 
     @FXML
-    private TableView<User> monthlyLeaderboardTable;
+    private TableView<Player> monthlyLeaderboardTable;
 
     @FXML
-    private TableView<User> allTimeLeaderboardTable;
+    private TableView<Player> allTimeLeaderboardTable;
 
     // Method to initialize the leaderboards with sample data
     @FXML
     public void initialize() {
         // Initialize sample data
-        ObservableList<User> weeklyLeaderboardData = getSampleUserData();
-        ObservableList<User> monthlyLeaderboardData = getSampleUserData();
-        ObservableList<User> allTimeLeaderboardData = getSampleUserData();
+        ObservableList<Player> weeklyLeaderboardData = getSamplePlayerData();
+        ObservableList<Player> monthlyLeaderboardData = getSamplePlayerData();
+        ObservableList<Player> allTimeLeaderboardData = getSamplePlayerData();
         // Set cell value factories for each column
         setCellValueFactories(weeklyLeaderboardTable);
         setCellValueFactories(monthlyLeaderboardTable);
@@ -43,30 +44,29 @@ public class LeaderboardController {
     }
 
     // Method to set cell value factories for each column
-    private void setCellValueFactories(TableView<User> leaderboardTable) {
-        TableColumn<User, String> UserNameColumn = new TableColumn<>("Username");
-        UserNameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+    private void setCellValueFactories(TableView<Player> leaderboardTable) {
+        TableColumn<Player, String> PlayerNameColumn = new TableColumn<>("Playername");
+        PlayerNameColumn.setCellValueFactory(new PropertyValueFactory<>("Playername"));
 
-        TableColumn<User, Integer> scoreColumn = new TableColumn<>("Score");
+        TableColumn<Player, Integer> scoreColumn = new TableColumn<>("Score");
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("totalScore"));
 
-        leaderboardTable.getColumns().setAll(UserNameColumn, scoreColumn);
+        leaderboardTable.getColumns().setAll(PlayerNameColumn, scoreColumn);
     }
 
-    // Method to generate sample User data
-    private ObservableList<User> getSampleUserData() {
-        ObservableList<User> Users = FXCollections.observableArrayList();
-        Users.add(new User("User1sdfsadflsdfsjdfksdjfkjskdjskdjskdjskdjskdjskdjsk", 100));
-        Users.add(new User("User2", 90));
-        Users.add(new User("User3", 80));
-        Users.add(new User("User4", 70));
-        // Add more sample Users as needed
-        return Users;
+    // Method to generate sample Player data
+    private ObservableList<Player> getSamplePlayerData() {
+        ObservableList<Player> Players = FXCollections.observableArrayList();
+        // Add more sample Players as needed
+        return Players;
     }
 
     @FXML
     public void switchToMainMenu(ActionEvent event) {
 
-        sceneLoader.loadFXML("/fxml/mainmenu.fxml");
+        if(GameConstants.username != null){
+            sceneLoader.loadFXML("/fxml/playmenu.fxml");
+        }
+        else sceneLoader.loadFXML("/fxml/mainmenu.fxml");
     }
 }

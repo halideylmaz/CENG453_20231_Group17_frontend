@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import catan.ceng.catanui.entities.StageEntity;
+import catan.ceng.catanui.entities.GameConstants;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +34,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             Scene mainScene=new Scene(parent,800,600);
             stage.setScene(mainScene);
 
-            StageEntity.stage = stage;
+            GameConstants.stage = stage;
             stage.show();
         }
         catch (IOException e) {

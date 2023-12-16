@@ -3,6 +3,7 @@ package catan.ceng.catanui.controller;
 import catan.ceng.catanui.entities.Player;
 import catan.ceng.catanui.helper.AlertHelper;
 import catan.ceng.catanui.service.RequestService;
+import catan.ceng.catanui.entities.GameConstants;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -58,7 +59,8 @@ public class LoginController {
         player.setPassword(password);
 
         //for now
-        SceneLoader.loadFXML("/fxml/playmenu.fxml");
+        //SceneLoader.loadFXML("/fxml/playmenu.fxml");
+        //GameConstants.username = username;
 
         RequestService restService = new RequestService();
         boolean loggedInUser = restService.login(player);
@@ -70,31 +72,11 @@ public class LoginController {
             AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Logged IN",
                     "in");
             SceneLoader.loadFXML("/fxml/playmenu.fxml");
+            GameConstants.username = username;
         }
 
         //Player player=Player.builder().username(username).password(password).build();
         //Player result= RequestService.login(player);
-
-
-        try{
-            //get response from server
-            boolean loginSuccessful = true;
-            if (!loginSuccessful) {
-                // Show the error message
-                //errorMessageLabel.setText(response.message);
-                errorMessageLabel.setText("Invalid username or password.");
-            } else {
-                // Clear the error message if login is successful
-                errorMessageLabel.setText("");
-                // Proceed with the next steps after successful login
-                // open play scene
-                SceneLoader.loadFXML("/fxml/playmenu.fxml");
-
-            }
-        } catch (Exception e) {
-            // Handle other exceptions
-            errorMessageLabel.setText("An error occurred during login.");
-        }
     }
 
     @FXML

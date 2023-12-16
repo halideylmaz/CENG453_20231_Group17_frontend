@@ -2,6 +2,7 @@ package catan.ceng.catanui.controller;
 
 
 import catan.ceng.catanui.shape.Hexagon;
+import catan.ceng.catanui.entities.GameConstants;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
+
 @Component
 public class CatanController implements Initializable {
     private static final int BOARD_SIZE = 5;
@@ -27,8 +29,6 @@ public class CatanController implements Initializable {
 
     @FXML
     public GridPane gameBoardPane;
-
-    private Hexagon[][] board;
 
 
     @Override
@@ -48,7 +48,7 @@ public class CatanController implements Initializable {
     private void initializeGameBoard() {
         Pane hexagonPane = new Pane();
         gameBoardPane.add(hexagonPane, 0, 0);
-        board=new Hexagon[BOARD_SIZE][BOARD_SIZE];
+        //board=new Hexagon[BOARD_SIZE][BOARD_SIZE];
         // Define the resource tiles and their corresponding numbers
         List<String> resources = new ArrayList<>();
         resources.addAll(Collections.nCopies(3, "Hill"));
@@ -121,13 +121,13 @@ public class CatanController implements Initializable {
         double hexagonY = centerY + row * (hexHeight * 0.6);
 
 
-        hexagon.setLayoutX(hexagonX);
+        hexagon.setLayoutX(hexagonX + 20);
         hexagon.setLayoutY(hexagonY);
 
         // Add hexagon to the pane
         hexagonPane.getChildren().add(hexagon);
         //add hexagon and related information to the board array
-        board[row][col]=hexagon;
+        GameConstants.game.board[row][col]=hexagon;
     }
 
     private int calculateCols(int row) {

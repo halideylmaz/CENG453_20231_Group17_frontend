@@ -7,14 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 import javafx.scene.Node;
-import catan.ceng.catanui.entities.StageEntity;
+import catan.ceng.catanui.entities.GameConstants;
 
 public class SceneLoader {
     public void loadFXML(String fxmlfilepath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlfilepath));
             Parent root = loader.load();
-            Stage stage = StageEntity.stage;
+            Stage stage = GameConstants.stage;
             stage.setScene(new Scene(root,800,600));
             stage.show();
         } catch (IOException e) {
