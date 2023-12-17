@@ -16,51 +16,99 @@
 
     <left>
         <!-- Player Information -->
-        <VBox spacing="10" BorderPane.alignment="TOP_LEFT">
+        <VBox spacing="10" BorderPane.alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <Label text="Player Information" style="-fx-font-size: 18;"/>
-            <!-- Placeholder for player information components -->
+            <Label fx:id="longestroad" style="-fx-font-size: 10;"/>
+            <Label fx:id="player1UsernameLabel" style="-fx-font-size: 10;"/>
+            <Label fx:id="player1ScoreLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player1CitiesLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player1SettlementsLabel" style="-fx-font-size: 8;" />
+            <Label fx:id="player1RoadsLabel" style="-fx-font-size: 8;"/>
+
+            <Label fx:id="player2UsernameLabel" style="-fx-font-size: 10;"/>
+            <Label fx:id="player2ScoreLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player2CitiesLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player2SettlementsLabel" style="-fx-font-size: 8;" />
+            <Label fx:id="player2RoadsLabel" style="-fx-font-size: 8;" />
+
+            <Label fx:id="player3UsernameLabel" style="-fx-font-size: 10;"/>
+            <Label fx:id="player3ScoreLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player3CitiesLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player3SettlementsLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player3RoadsLabel" style="-fx-font-size: 8;"/>
+
+            <Label fx:id="player4UsernameLabel" style="-fx-font-size: 10;"/>
+            <Label fx:id="player4ScoreLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player4CitiesLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player4SettlementsLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player4RoadsLabel" style="-fx-font-size: 8;"/>
+
 
         </VBox>
     </left>
 
     <bottom>
         <!-- Control Panel -->
-        <HBox alignment="CENTER" spacing="10" BorderPane.alignment="BOTTOM_CENTER">
+        <VBox alignment="CENTER" spacing="10" BorderPane.alignment="BOTTOM_CENTER">
+        <HBox alignment="CENTER" spacing="10" >
+            <Button text="Purchase Road" style="-fx-font-size: 10; -fx-background-color: rgb(82, 168, 57); -fx-text-fill: white; -fx-border-radius: 5;"/>
+            <Button text="Purchase Settlement" style="-fx-font-size: 10; -fx-background-color: rgb(82, 168, 57); -fx-text-fill: white; -fx-border-radius: 5;"/>
+            <Button text="Purchase City" style="-fx-font-size: 10; -fx-background-color: rgb(82, 168, 57); -fx-text-fill: white; -fx-border-radius: 5;"/>
+            <Button text="End turn" onAction="#endturnbutton" style="-fx-font-size: 10; -fx-background-color: rgb(82, 168, 57); -fx-text-fill: white; -fx-border-radius: 5;"/>
+            <Button text="Return to Menu"  onAction="#switchtoplaymenu" style="-fx-font-size: 10; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-border-radius: 5;"/>
+        </HBox>
+        <HBox alignment="CENTER" spacing="10">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <Button text="Roll Dice" onAction="#handleRollDice"/>
-            <!-- Placeholder for other control buttons -->
-
-
+            <Label text="Road costs 1 Lumber and 1 Brick" style="-fx-font-size: 9;"/>
+            <Label text="Settlement costs 1 Lumber, 1 Brick, 1 Wool, and 1 Grain" style="-fx-font-size: 9;"/>
+            <Label text="City costs 3 Ore and 2 Grain" style="-fx-font-size: 9;"/>
         </HBox>
+        </VBox>
     </bottom>
 
     <top>
         <!-- Navigation Buttons -->
-        <HBox alignment="CENTER" spacing="10" BorderPane.alignment="CENTER_RIGHT">
+        <VBox alignment="CENTER" spacing="10" BorderPane.alignment="CENTER">
             <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
+                <Insets top="10" right="10" bottom="20" left="10"/>
             </padding>
-            <Button text="Login" onAction="#showLoginPage"/>
-            <Button text="Sign Up" onAction="#showSignUpPage"/>
-            <Button text="New Game" onAction="#initializeGameBoard"/>
-            <Button text="Continue"/>
-            <Button text="Pause"/>
-            <Button text="LeaderBoard" />
-
-
-        </HBox>
+            <Label fx:id="playerTurnLabel" style="-fx-font-size: 20;"/>
+        </VBox>
     </top>
 
     <right>
-        <VBox spacing="10" BorderPane.alignment="TOP_RIGHT">
+        <VBox spacing="10" BorderPane.alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
+            <Label fx:id="player1ResourcesLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player1BrickLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player1LumberLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player1WoolLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player1GrainLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player1OreLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player2ResourcesLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player2BrickLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player2LumberLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player2WoolLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player2GrainLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player2OreLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player3ResourcesLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player3BrickLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player3LumberLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player3WoolLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player3GrainLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player3OreLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player4ResourcesLabel" style="-fx-font-size: 8;"/>
+            <Label fx:id="player4BrickLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player4LumberLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player4WoolLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player4GrainLabel" style="-fx-font-size: 7;"/>
+            <Label fx:id="player4OreLabel" style="-fx-font-size: 7;"/>
 
         </VBox>
     </right>

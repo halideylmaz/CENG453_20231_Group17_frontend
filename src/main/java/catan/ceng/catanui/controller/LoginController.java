@@ -59,8 +59,8 @@ public class LoginController {
         player.setPassword(password);
 
         //for now
-        //SceneLoader.loadFXML("/fxml/playmenu.fxml");
-        //GameConstants.username = username;
+        GameConstants.username = username;
+        SceneLoader.loadFXML("/fxml/playmenu.fxml");
 
         RequestService restService = new RequestService();
         boolean loggedInUser = restService.login(player);
