@@ -8,14 +8,7 @@ import javafx.stage.Window;
  * A utility class for creating and displaying alert dialogs in a JavaFX application.
  */
 public class AlertHelper {
-    /**
-     * This method creates alerts with the given title and message.
-     *
-     * @param alertType Alert type
-     * @param owner Window owner
-     * @param title Title to set
-     * @param message Message to show
-     */
+
     public static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
