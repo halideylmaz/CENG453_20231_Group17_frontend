@@ -138,6 +138,10 @@ public class CatanController implements Initializable {
     @FXML
     private Label longestroad;
 
+    private boolean choosingRoad = false;
+    private boolean choosingSettlement = false;
+    private boolean choosingCity = false;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
             if (GameConstants.vsAI) {
@@ -357,11 +361,15 @@ public class CatanController implements Initializable {
 
 
     public void beginturn(){
+        choosingCity=false;
+        choosingSettlement=false;
+        choosingRoad=false;
         updateResourceInfo();
         int sum = handleRollDice();
         if (sum == 7) {
             //handleSeven();
         } else {
+            //give resources according to player's settlements and cities
             //handleResources(sum);
         }
         CatanPlayer player = GameConstants.game.getCurrentPlayer();
@@ -389,11 +397,122 @@ public class CatanController implements Initializable {
 
     @FXML
     public void endturnbutton(ActionEvent event) {
+        Window owner = GameConstants.stage.getScene().getWindow();
         if(GameConstants.game.getCurrentPlayer().getPlayerName().equals(GameConstants.username)){
             endTurn();
         }
         else{
-            Window owner = GameConstants.stage.getScene().getWindow();
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "It is not your turn",
+                    "Please wait for your turn");
+        }
+    }
+
+    @FXML
+    public void buyRoadbutton(ActionEvent event) {
+        Window owner = GameConstants.stage.getScene().getWindow();
+        if(GameConstants.game.getCurrentPlayer().getPlayerName().equals(GameConstants.username)){
+            AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Choose Road",
+                    "Choose a road to buy");
+            choosingRoad = true;
+        }
+        else{
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "It is not your turn",
+                    "Please wait for your turn");
+        }
+    }
+
+    @FXML
+    public void buySettlementbutton(ActionEvent event) {
+        Window owner = GameConstants.stage.getScene().getWindow();
+        if(GameConstants.game.getCurrentPlayer().getPlayerName().equals(GameConstants.username)){
+            AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Choose Settlement",
+                    "Choose a settlement to buy");
+            choosingSettlement = true;
+        }
+        else{
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "It is not your turn",
+                    "Please wait for your turn");
+        }
+    }
+
+    @FXML
+    public void buyCitybutton(ActionEvent event) {
+        Window owner = GameConstants.stage.getScene().getWindow();
+        if(GameConstants.game.getCurrentPlayer().getPlayerName().equals(GameConstants.username)){
+            AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Choose City",
+                    "Choose a settlement to upgrade to city");
+            choosingCity = true;
+        }
+        else{
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "It is not your turn",
+                    "Please wait for your turn");
+        }
+    }
+
+    @FXML
+    public void chooseRoadtoBuy(ActionEvent event) {
+        if(!choosingRoad){
+            return;
+        }
+        Window owner = GameConstants.stage.getScene().getWindow();
+        CatanPlayer player = GameConstants.game.getCurrentPlayer();
+        if(player.getPlayerName().equals(GameConstants.username)){
+            if(player.buildRoad()){
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Road bought",
+                        "Road bought successfully");
+                //TODO: update road image
+            }
+            else{
+                AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Road can not bought",
+                        "Road can not bought");
+            }
+            choosingRoad = false;
+        }
+        else{
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "It is not your turn",
+                    "Please wait for your turn");
+        }
+    }
+
+    @FXML
+    public void chooseSettlementtoBuy(ActionEvent event) {
+        if(!choosingSettlement){
+            return;
+        }
+        Window owner = GameConstants.stage.getScene().getWindow();
+        CatanPlayer player = GameConstants.game.getCurrentPlayer();
+        if (player.getPlayerName().equals(GameConstants.username)) {
+            if (player.buildSettlement()) {
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Settlement bought",
+                        "Settlement bought successfully");
+            } else {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Settlement can not bought",
+                        "Settlement can not bought");
+            }
+            choosingSettlement = false;
+        } else {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "It is not your turn",
+                    "Please wait for your turn");
+        }
+    }
+
+    @FXML
+    public void chooseCitytoBuy(ActionEvent event) {
+        if(!choosingCity){
+            return;
+        }
+        Window owner = GameConstants.stage.getScene().getWindow();
+        CatanPlayer player = GameConstants.game.getCurrentPlayer();
+        if (player.getPlayerName().equals(GameConstants.username)) {
+            if (player.buildCity()) {
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "City bought",
+                        "City bought successfully");
+            } else {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "City can not bought",
+                        "City can not bought");
+            }
+            choosingCity = false;
+        } else {
             AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "It is not your turn",
                     "Please wait for your turn");
         }

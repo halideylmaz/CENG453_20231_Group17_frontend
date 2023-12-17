@@ -136,20 +136,60 @@ public class CatanPlayer {
     }
 
     public boolean buildSettlement() {
-        return true;
-        // Implement logic to build a settlement, deduct the required resources, and update the player's settlements count
-        // Return true if successful, false if not enough resources
+        if(getResourceCount(ResourceType.LUMBER) < 1 || getResourceCount(ResourceType.BRICK) < 1 || getResourceCount(ResourceType.WOOL) < 1 || getResourceCount(ResourceType.GRAIN) < 1) {
+            return false;
+        }
+        //if settlement is can be built according to rules about roads and settlements
+        if(true){
+            removeResource(ResourceType.LUMBER, 1);
+            removeResource(ResourceType.BRICK, 1);
+            removeResource(ResourceType.WOOL, 1);
+            removeResource(ResourceType.GRAIN, 1);
+            setSettlements(getSettlements() + 1);
+            //add settlement to player's settlements
+            setScore(getScore() + 1);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public boolean buildRoad() {
-        return true;
-        // Implement logic to build a road, deduct the required resources, and update the player's roads count
-        // Return true if successful, false if not enough resources
+
+        if(getResourceCount(ResourceType.LUMBER) < 1 || getResourceCount(ResourceType.BRICK) < 1) {
+            return false;
+        }
+        //if road is can be built according to rules about roads and settlements
+        if(true){
+            removeResource(ResourceType.LUMBER, 1);
+            removeResource(ResourceType.BRICK, 1);
+            setRoads(getRoads() + 1);
+            //add road to player's roads
+            //if longest road is achieved update score and longest road owner
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public boolean buildCity() {
-        return true;
-        // Implement logic to upgrade a settlement to a city, deduct the required resources, and update the player's cities count
-        // Return true if successful, false if not enough resources
+        if(getResourceCount(ResourceType.GRAIN) < 2 || getResourceCount(ResourceType.ORE) < 3) {
+            return false;
+        }
+        //if city is can be built according to rules about cities and settlements
+        if(true){
+            removeResource(ResourceType.GRAIN, 2);
+            removeResource(ResourceType.ORE, 3);
+            setCities(getCities() + 1);
+            setSettlements(getSettlements() - 1);
+            //add city to player's cities
+            setScore(getScore() + 2);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
