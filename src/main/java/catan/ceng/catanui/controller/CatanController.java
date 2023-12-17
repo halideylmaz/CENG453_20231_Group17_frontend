@@ -341,7 +341,7 @@ public class CatanController implements Initializable {
         }
     }
 
-    public int handleRollDice() {
+    private int handleRollDice() {
         /* TODO if player's turn */
         int die1= (int) (Math.random()*6)+1;
         int die2= (int) (Math.random()*6)+1;
@@ -359,12 +359,39 @@ public class CatanController implements Initializable {
         return die1+die2;
     }
 
+    private void endGame() {
+        CatanPlayer winner = GameConstants.game.getPlayerwithHighestScore();
+        Window owner = GameConstants.stage.getScene().getWindow();
+        //update scores here to server
 
-    public void beginturn(){
+        if (winner != null) {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    // Handle InterruptedException, if needed
+                    System.out.println("Interrupted");
+                }
+                Platform.runLater(() -> {
+                    // Perform UI updates here
+                    AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Game Over!", "The winner is " + winner.getPlayerName() + "!");
+                    sceneLoader.loadFXML("/fxml/playmenu.fxml");
+                });
+
+
+            }).start();
+        }
+    }
+
+    private void beginturn(){
         choosingCity=false;
         choosingSettlement=false;
         choosingRoad=false;
         updateResourceInfo();
+        if(GameConstants.game.isGameOver()){
+            endGame();
+            return;
+        }
         int sum = handleRollDice();
         if (sum == 7) {
             //handleSeven();
@@ -390,7 +417,7 @@ public class CatanController implements Initializable {
         }
     }
 
-    public void endTurn(){
+    private void endTurn(){
         GameConstants.game.endTurn();
         beginturn();
     }

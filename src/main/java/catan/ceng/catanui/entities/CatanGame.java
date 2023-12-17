@@ -41,6 +41,16 @@ public class CatanGame {
         return players.get(currentPlayerIndex);
     }
 
+    public CatanPlayer getPlayerwithHighestScore() {
+        CatanPlayer playerwithHighestScore = players.get(0);
+        for (CatanPlayer player : players) {
+            if (player.getScore() > playerwithHighestScore.getScore()) {
+                playerwithHighestScore = player;
+            }
+        }
+        return playerwithHighestScore;
+    }
+
     public CatanPlayer getPlayerwithLongestRoad() {
         if(playerwithlongestroadIndex == -1){
             return null;
