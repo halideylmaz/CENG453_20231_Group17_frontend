@@ -8,6 +8,22 @@ import javafx.scene.layout.VBox;
 import catan.ceng.catanui.controller.SceneLoader;
 import javafx.stage.Window;
 
+/**
+ * The `ResetPasswordController` class is responsible for controlling the password reset UI and handling password
+ * reset actions. It provides functionality for sending a reset password email, validating the token, and updating
+ * the password.
+ *
+ * <p>This class is typically used to facilitate the process of resetting a user's password in the application.
+ *
+ * <p>Usage:
+ * <pre>{@code
+ * ResetPasswordController resetPasswordController = new ResetPasswordController();
+ * resetPasswordController.sendResetPasswordEmail();
+ * }</pre>
+ *
+ * @see org.springframework.stereotype.Component
+ */
+@Component
 public class ResetPasswordController {
 
     @FXML
@@ -32,6 +48,10 @@ public class ResetPasswordController {
     private Button submitButton;
     private SceneLoader SceneLoader = new SceneLoader();
 
+    /**
+     * Sends a reset password email to the provided email address.
+     * Validates the email input and displays appropriate error messages or proceeds to the token and password input.
+     */
     public void sendResetPasswordEmail() {
         String email = emailField.getText();
         Window owner = submitButton.getScene().getWindow();
@@ -56,6 +76,10 @@ public class ResetPasswordController {
 
     }
 
+    /**
+     * Resets the user's password using the provided token and new password.
+     * Validates the token and password input and displays appropriate error messages or navigates to the login scene.
+     */
     public void resetPassword() {
         // Implement logic to validate the token and reset the password
         // Update errorMessageLabel if there's an error

@@ -13,7 +13,20 @@ import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import org.springframework.stereotype.Component;
 
-
+/**
+ * The `LoginController` class is responsible for controlling the login UI and handling user login actions.
+ * It provides functionality for validating user credentials and navigating to different scenes upon successful login.
+ *
+ * <p>This class is typically used for user authentication in the application.
+ *
+ * <p>Usage:
+ * <pre>{@code
+ * LoginController loginController = new LoginController();
+ * loginController.handleLogin();
+ * }</pre>
+ *
+ * @see org.springframework.stereotype.Component
+ */
 @Component
 public class LoginController {
     private SceneLoader SceneLoader = new SceneLoader();
@@ -25,6 +38,11 @@ public class LoginController {
     @FXML
     private Button loginButton;
 
+    /**
+     * Handles the user login action.
+     * Validates the entered username and password, communicates with the backend service for authentication,
+     * and navigates to the appropriate scene upon successful login.
+     */
     @FXML
     public void handleLogin() {
         String username = usernameField.getText();
@@ -63,12 +81,18 @@ public class LoginController {
 
     }
 
+    /**
+     * Switches to the sign-up scene when the corresponding button is clicked.
+     */
     @FXML
     public void switchToSignUp(ActionEvent event) {
 
         SceneLoader.loadFXML("/fxml/signup.fxml");
     }
 
+    /**
+     * Switches to the main menu scene when the corresponding button is clicked.
+     */
     @FXML
     public void switchToMainMenu(ActionEvent event) {
 

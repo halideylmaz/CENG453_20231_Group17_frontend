@@ -16,7 +16,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.util.List;
-
+/**
+ * The `LeaderboardController` class manages the leaderboards UI, including displaying weekly, monthly, and all-time leaderboards.
+ * It fetches leaderboard data from the backend, parses the JSON response, and populates the leaderboards with player information.
+ *
+ * <p>This class is responsible for initializing and displaying leaderboards with sample data.
+ *
+ * <p>Usage:
+ * <pre>{@code
+ * LeaderboardController leaderboardController = new LeaderboardController();
+ * leaderboardController.initialize();
+ * }</pre>
+ *
+ * @see org.springframework.stereotype.Component
+ */
+@Component
 public class LeaderboardController {
 
     private SceneLoader sceneLoader = new SceneLoader();
@@ -30,6 +44,11 @@ public class LeaderboardController {
     @FXML
     private TableView<Player> allTimeLeaderboardTable;
 
+    /**
+     * Initializes the leaderboards with data.
+     * It sets cell value factories for each column and fetches leaderboard data from the backend.
+     * Weekly, monthly, and all-time leaderboards are populated.
+     */
     // Method to initialize the leaderboards with sample data
     @FXML
     public void initialize() {
@@ -57,6 +76,11 @@ public class LeaderboardController {
 
     }
 
+    /**
+     * Sets cell value factories for each column in the leaderboard table.
+     *
+     * @param leaderboardTable The leaderboard table to set cell value factories for.
+     */
     // Method to set cell value factories for each column
     private void setCellValueFactories(TableView<Player> leaderboardTable) {
         TableColumn<Player, String> PlayerNameColumn = new TableColumn<>("userName");
@@ -68,6 +92,13 @@ public class LeaderboardController {
         leaderboardTable.getColumns().setAll(PlayerNameColumn, scoreColumn);
     }
 
+    /**
+     * Parses the leaderboard data retrieved from the backend.
+     *
+     * @param time The time period for which to retrieve the leaderboard data (e.g., "weekly").
+     * @return A list of Player objects representing the leaderboard data.
+     * @throws IOException if there's an error during JSON parsing or data retrieval.
+     */
     private List<Player> parseLeaderBoardList(String time) throws IOException {
         RequestService requestService = new RequestService();
         String input = requestService.getScoreboard(time);
@@ -80,6 +111,11 @@ public class LeaderboardController {
         });
     }
 
+    /**
+     * Switches to the main menu scene when the corresponding button is clicked.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     public void switchToMainMenu(ActionEvent event) {
 
