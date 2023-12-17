@@ -29,7 +29,7 @@ import javafx.event.ActionEvent;
 import catan.ceng.catanui.entities.CatanGame;
 import catan.ceng.catanui.entities.CatanPlayer;
 import catan.ceng.catanui.helper.AlertHelper;
-
+import catan.ceng.catanui.service.RequestService;
 
 
 @Component
@@ -363,6 +363,12 @@ public class CatanController implements Initializable {
         CatanPlayer winner = GameConstants.game.getPlayerwithHighestScore();
         Window owner = GameConstants.stage.getScene().getWindow();
         //update scores here to server
+        RequestService restService = new RequestService();
+        GameConstants.game.getPlayers().stream()
+                .filter(player -> !player.isAI())
+                .forEach(player -> {
+                    restService.addScore(player.getPlayerName(), player.getScore().toString());
+                });
 
         if (winner != null) {
             new Thread(() -> {
