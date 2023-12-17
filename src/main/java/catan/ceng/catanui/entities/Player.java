@@ -11,11 +11,10 @@ import lombok.*;
 public class Player {
 
     private Long id;
-    private String username;
+    private String userName;
+    private String email;
     private String password;
-    private Long totalScore;
-
-
+    private Long score;
 
 }
 
