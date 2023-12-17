@@ -277,7 +277,7 @@ public class RequestService {
     public void addScore(String userName, String score) {
         try {
 
-            String scoreUrl = REST_URL + "/scores";
+            String scoreUrl = REST_URL + "scores";
             URL url = new URL(scoreUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
@@ -290,9 +290,9 @@ public class RequestService {
 
             String input = "{\"userName\":\"";
             input = input.concat(userName);
-            input = input.concat("\",\"score\":\"");
+            input = input.concat("\",\"score\":");
             input = input.concat(score);
-            input = input.concat("\",\"date\":\"");
+            input = input.concat(",\"date\":\"");
             input = input.concat(formattedDate);
             input = input.concat("\"}");
 
@@ -313,8 +313,7 @@ public class RequestService {
                 conn.disconnect();
                 log.info(response.toString());
             } else {
-                log.error(input);
-                log.error(String.valueOf(responseCode));
+                log.error(String.valueOf(conn.getResponseMessage()));
                 conn.disconnect();
             }
 
