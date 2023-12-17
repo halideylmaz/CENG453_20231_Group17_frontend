@@ -4,7 +4,9 @@ package catan.ceng.catanui.helper;
 import javafx.scene.control.Alert;
 import javafx.stage.Window;
 
-
+/**
+ * A utility class for creating and displaying alert dialogs in a JavaFX application.
+ */
 public class AlertHelper {
     /**
      * This method creates alerts with the given title and message.

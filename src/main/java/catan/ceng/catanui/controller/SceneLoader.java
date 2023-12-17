@@ -9,7 +9,15 @@ import java.io.IOException;
 import javafx.scene.Node;
 import catan.ceng.catanui.entities.GameConstants;
 
+/**
+ * A utility class for loading and displaying JavaFX scenes from FXML files.
+ */
 public class SceneLoader {
+    /**
+     * Loads an FXML file and sets it as the scene for the current JavaFX stage.
+     *
+     * @param fxmlFilePath The path to the FXML file to load.
+     */
     public void loadFXML(String fxmlfilepath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlfilepath));

@@ -17,13 +17,25 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.*;
 
+/**
+ * This service class handles HTTP requests to a RESTful API for user login using the OkHttpClient library.
+ * It sends a POST request with JSON data to the specified URL and handles the response.
+ */
 @Service
 @Slf4j
 public class RequestService {
     private static final ObjectMapper objectMapper= new ObjectMapper();
     private static final OkHttpClient client=new OkHttpClient();
 
+    // The base URL for the REST API
     private static String REST_URL="http://127.0.0.1:8080/";
+
+    /**
+     * Attempts to log in a player by sending a POST request to the login API.
+     *
+     * @param player The player object containing username and password for login.
+     * @return True if the login is successful, false otherwise, or null in case of an exception.
+     */
     @SneakyThrows
     public static Boolean login(Player player) {
         try {
