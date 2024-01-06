@@ -8,6 +8,7 @@ import catan.ceng.catanui.entities.GameConstants;
 import catan.ceng.catanui.enums.ResourceType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Window;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,6 +36,8 @@ import catan.ceng.catanui.service.RequestService;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -145,9 +148,12 @@ public class CatanController implements Initializable {
     @FXML
     private Label longestroad;
 
+    public Hexagon[][] board;
+
     private boolean choosingRoad = false;
     private boolean choosingSettlement = false;
     private boolean choosingCity = false;
+    private Pane hexagonPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -166,11 +172,60 @@ public class CatanController implements Initializable {
                 player3.initialResources();
                 player4.initialResources();
                 GameConstants.game = new CatanGame(players);
-
                 initializeGameBoard();
                 updateResourceInfo();
+                giveRandomRoadandSettlement();
                 beginturn();
             }
+    }
+
+    private void giveRandomRoadandSettlement(){
+        List<Settlement> settlements = new ArrayList<>();
+        settlements.addAll(GameConstants.game.getSettlements());
+        List<Road> roads = new ArrayList<>();
+        roads.addAll(GameConstants.game.getRoads());
+        Collections.shuffle(settlements);
+        List<Settlement> randomSettlements = settlements.subList(0, 4);
+        GameConstants.game.getPlayers().get(0).addSettlement(randomSettlements.get(0));
+        GameConstants.game.getPlayers().get(1).addSettlement(randomSettlements.get(1));
+        GameConstants.game.getPlayers().get(2).addSettlement(randomSettlements.get(2));
+        GameConstants.game.getPlayers().get(3).addSettlement(randomSettlements.get(3));
+        List<Road> neihbourtofsettlement0 = roads.stream().filter(road ->
+                road.neighbour(randomSettlements.get(0))).collect(Collectors.toList());
+        Collections.shuffle(neihbourtofsettlement0);
+        GameConstants.game.getPlayers().get(0).addRoad(neihbourtofsettlement0.get(0));
+
+        List<Road> neihbourtofsettlement1 = roads.stream().filter(road ->
+                road.neighbour(randomSettlements.get(1))).collect(Collectors.toList());
+        Collections.shuffle(neihbourtofsettlement1);
+        int i = 0;
+        Road road1 = neihbourtofsettlement1.get(0);
+        while(road1.getOwner() != null){
+            i++;
+            road1 = neihbourtofsettlement1.get(i);
+        }
+        GameConstants.game.getPlayers().get(1).addRoad(road1);
+
+        List<Road> neihbourtofsettlement2 = roads.stream().filter(road ->
+                road.neighbour(randomSettlements.get(2))).collect(Collectors.toList());
+        Collections.shuffle(neihbourtofsettlement2);
+        i=0;
+        Road road2 = neihbourtofsettlement2.get(0);
+        while(road2.getOwner() != null){
+            i++;
+            road2 = neihbourtofsettlement2.get(i);
+        }
+        GameConstants.game.getPlayers().get(2).addRoad(road2);
+        List<Road> neihbourtofsettlement3 = roads.stream().filter(road ->
+                road.neighbour(randomSettlements.get(3))).collect(Collectors.toList());
+        Collections.shuffle(neihbourtofsettlement3);
+        i=0;
+        Road road3 = neihbourtofsettlement3.get(0);
+        while(road3.getOwner() != null){
+            i++;
+            road3 = neihbourtofsettlement3.get(i);
+        }
+        GameConstants.game.getPlayers().get(3).addRoad(road3);
     }
 
     private void updateResourceInfo() {
@@ -244,11 +299,11 @@ public class CatanController implements Initializable {
 
     @FXML
     private void initializeGameBoard() {
-        Pane hexagonPane = new Pane();
+        hexagonPane = new Pane();
         gameBoardPane.add(hexagonPane, 0, 0);
         gameBoardPane.setHalignment(hexagonPane, HPos.CENTER);
         gameBoardPane.setValignment(hexagonPane, VPos.CENTER);
-        //board=new Hexagon[BOARD_SIZE][BOARD_SIZE];
+        board=new Hexagon[BOARD_SIZE][BOARD_SIZE];
         // Define the resource tiles and their corresponding numbers
         List<String> resources = new ArrayList<>();
         resources.addAll(Collections.nCopies(3, "Hill"));
@@ -337,7 +392,8 @@ public class CatanController implements Initializable {
         // Add roads along the edges of the hexagon
         addAllRoads(hexagonX +33 , hexagonY + 37, hexagonPane, hexagon); // Upper-left corner
         addAllSettlements(hexagonX + 33, hexagonY + 37, hexagonPane, hexagon); // Upper-left corner
-        GameConstants.game.board[row][col]=hexagon;
+        board[row][col]=hexagon;
+        GameConstants.game.addHexagon(hexagon);
     }
 
     private void addAllSettlements(double hexagonX, double hexagonY, Pane hexagonPane, Hexagon hexagon){
@@ -365,42 +421,48 @@ public class CatanController implements Initializable {
         if(settlement1 != null){
             hexagonPane.getChildren().add(settlement1.getSettlement());
             settlement1.getSettlement().setOnMouseClicked(e->{
-                chooseSettlementtoBuy(settlement1);
+                if(choosingSettlement) chooseSettlementtoBuy(settlement1);
+                else if(choosingCity) chooseCitytoBuy(settlement1);
             });
         }
         Settlement settlement2 = GameConstants.game.addSettlement(x2, y2, hexagon);
         if(settlement2 != null){
             hexagonPane.getChildren().add(settlement2.getSettlement());
             settlement2.getSettlement().setOnMouseClicked(e->{
-                chooseSettlementtoBuy(settlement2);
+               if(choosingSettlement) chooseSettlementtoBuy(settlement2);
+                else if(choosingCity) chooseCitytoBuy(settlement2);
             });
         }
         Settlement settlement3 = GameConstants.game.addSettlement(x3, y3, hexagon);
         if(settlement3 != null){
             hexagonPane.getChildren().add(settlement3.getSettlement());
             settlement3.getSettlement().setOnMouseClicked(e->{
-                chooseSettlementtoBuy(settlement3);
+                if(choosingSettlement) chooseSettlementtoBuy(settlement3);
+                else if(choosingCity) chooseCitytoBuy(settlement3);
             });
         }
         Settlement settlement4 = GameConstants.game.addSettlement(x4, y4, hexagon);
         if(settlement4 != null){
             hexagonPane.getChildren().add(settlement4.getSettlement());
             settlement4.getSettlement().setOnMouseClicked(e->{
-                chooseSettlementtoBuy(settlement4);
+                if(choosingSettlement) chooseSettlementtoBuy(settlement4);
+                else if(choosingCity) chooseCitytoBuy(settlement4);
             });
         }
         Settlement settlement5 = GameConstants.game.addSettlement(x5, y5, hexagon);
         if(settlement5 != null){
             hexagonPane.getChildren().add(settlement5.getSettlement());
             settlement5.getSettlement().setOnMouseClicked(e->{
-                chooseSettlementtoBuy(settlement5);
+                if(choosingSettlement) chooseSettlementtoBuy(settlement5);
+                else if(choosingCity) chooseCitytoBuy(settlement5);
             });
         }
         Settlement settlement6 = GameConstants.game.addSettlement(x6, y6, hexagon);
         if(settlement6 != null){
             hexagonPane.getChildren().add(settlement6.getSettlement());
             settlement6.getSettlement().setOnMouseClicked(e->{
-                chooseSettlementtoBuy(settlement6);
+                if(choosingSettlement) chooseSettlementtoBuy(settlement6);
+                else if(choosingCity) chooseCitytoBuy(settlement6);
             });
         }
     }
@@ -445,7 +507,7 @@ public class CatanController implements Initializable {
          if(road1!= null) {
              hexagonPane.getChildren().add(road1.getLine());
              road1.getLine().setOnMouseClicked(e -> {
-                 chooseRoadtoBuy(road1);
+                chooseRoadtoBuy(road1);
              });
          };
         Road road2 = GameConstants.game.addRoad( startX2, startY2, endX2, endY2, hexagon);
@@ -552,18 +614,18 @@ public class CatanController implements Initializable {
         choosingCity=false;
         choosingSettlement=false;
         choosingRoad=false;
+        int sum = handleRollDice();
+        if (sum == 7) {
+            //do nothing
+        } else {
+            //give resources according to player's settlements and cities
+            GameConstants.game.handleResources(sum);
+        }
         GameConstants.game.updateLongestRoad();
         updateResourceInfo();
         if(GameConstants.game.isGameOver()){
             endGame();
             return;
-        }
-        int sum = handleRollDice();
-        if (sum == 7) {
-            //handleSeven();
-        } else {
-            //give resources according to player's settlements and cities
-            //handleResources(sum);
         }
         CatanPlayer player = GameConstants.game.getCurrentPlayer();
         if(player.isAI()){
@@ -572,14 +634,19 @@ public class CatanController implements Initializable {
                 System.out.println("AI turn ended");
                 Platform.runLater(() -> {
                     // Perform UI updates here
+                    player.getSettlementsList().stream().filter(s -> s.isCity()).forEach(s -> {
+                        if(!hexagonPane.getChildren().contains(s.getCity())){
+                            hexagonPane.getChildren().remove(s.getSettlement());
+                            hexagonPane.getChildren().add(s.getCity());
+
+                        }
+
+                    });
                     endTurn();
                 });
 
 
             }).start();
-        }
-        else{
-            //currentPlayer.beginTurn();
         }
     }
 
@@ -652,7 +719,7 @@ public class CatanController implements Initializable {
             if(player.buildRoad(road)){
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Road bought",
                         "Road bought successfully");
-                //TODO: update road image
+                updateResourceInfo();
             }
             else{
                 AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Road can not bought",
@@ -676,6 +743,7 @@ public class CatanController implements Initializable {
             if (player.buildSettlement(settlement)) {
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Settlement bought",
                         "Settlement bought successfully");
+                updateResourceInfo();
             } else {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Settlement can not bought",
                         "Settlement can not bought");
@@ -687,17 +755,19 @@ public class CatanController implements Initializable {
         }
     }
 
-    @FXML
-    public void chooseCitytoBuy(ActionEvent event) {
+    public void chooseCitytoBuy(Settlement settlement) {
         if(!choosingCity){
             return;
         }
         Window owner = GameConstants.stage.getScene().getWindow();
         CatanPlayer player = GameConstants.game.getCurrentPlayer();
         if (player.getPlayerName().equals(GameConstants.username)) {
-            if (player.buildCity()) {
+            if (player.buildCity(settlement)) {
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "City bought",
                         "City bought successfully");
+                hexagonPane.getChildren().remove(settlement.getSettlement());
+                hexagonPane.getChildren().add(settlement.getCity());
+                updateResourceInfo();
             } else {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "City can not bought",
                         "City can not bought");

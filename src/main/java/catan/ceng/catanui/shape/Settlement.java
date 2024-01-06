@@ -9,6 +9,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.layout.Pane;
 import catan.ceng.catanui.entities.CatanPlayer;
 
 import java.util.ArrayList;
@@ -21,10 +22,13 @@ public class Settlement {
     private double centerY;
     private double radius;
     private Polygon settlement;
+    private Polygon city = null;
     private CatanPlayer owner;
+    private boolean isCity;
 
     public Settlement(double centerX, double centerY) {
         this.radius = 15;
+        isCity = false;
         Polygon triangle = new Polygon();
         for (int i = 0; i < 3; i++) {
             double angle = 2.0 * Math.PI / 3 * i;
@@ -37,6 +41,35 @@ public class Settlement {
         this.settlement = triangle;
         this.centerX = centerX;
         this.centerY = centerY;
+    }
+
+    public void toCity(){
+        this.radius = 20;
+        Polygon square = new Polygon();
+        for (int i = 0; i < 4; i++) {
+            double angle = 2.0 * Math.PI / 4 * i;
+            double x = centerX + radius * Math.cos(angle);
+            double y = centerY + radius * Math.sin(angle);
+
+            square.getPoints().addAll(x, y);
+        }
+        if(owner !=null ){
+            Color lineColor = Color.web(owner.getColor());
+           square.setFill(lineColor);
+        }
+        else {
+            square.setFill(Color.WHITE);
+        }
+        this.city = square;
+        isCity = true;
+    }
+
+    public boolean isCity(){
+        return isCity;
+    }
+
+    public Polygon getCity() {
+        return city;
     }
 
     public void setOwner(CatanPlayer owner){

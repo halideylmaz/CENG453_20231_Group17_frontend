@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import catan.ceng.catanui.enums.ResourceType;
 
 public class Hexagon extends StackPane {
     private static final double HEXAGON_RADIUS = 39.0;
@@ -33,6 +34,23 @@ public class Hexagon extends StackPane {
         
     }
 
+    public ResourceType getResourceType(){
+        switch(resource){
+            case "Hill":
+                return ResourceType.BRICK;
+            case "Mountain":
+                return ResourceType.ORE;
+            case "Forest":
+                return ResourceType.LUMBER;
+            case "Field":
+                return ResourceType.GRAIN;
+            case "Pasture":
+                return ResourceType.WOOL;
+            default:
+                return null;
+        }
+    }
+
     public void addRoad(Road road){
         roads.add(road);
     }
@@ -41,8 +59,13 @@ public class Hexagon extends StackPane {
         settlements.add(settlement);
     }
 
+    public int getNumber() {
+        return number;
+    }
 
-
+    public List<Settlement> getSettlements() {
+        return settlements;
+    }
 
     private Polygon createHexagon(String resource) {
         Polygon hexagon = new Polygon();

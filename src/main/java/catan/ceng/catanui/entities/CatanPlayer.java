@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import catan.ceng.catanui.entities.GameConstants;
+import java.util.stream.Collectors;
+import java.util.Collections;
 
 public class CatanPlayer {
     private String playerName;
@@ -17,6 +19,7 @@ public class CatanPlayer {
     private int roads;
     private int settlements;
     private int cities;
+    private int longestRoad;
     private Map<ResourceType, Integer> resources; // Store the player's resource cards
     private List<Road> roadsList = new ArrayList<>();
     private List<Settlement> settlementsList = new ArrayList<>();
@@ -29,6 +32,7 @@ public class CatanPlayer {
         this.roads = 0;
         this.settlements = 0;
         this.cities = 0;
+        this.longestRoad = 0;
         this.resources = initializeResourceMap();
     }
 
@@ -57,6 +61,38 @@ public class CatanPlayer {
 
     public int getRoads() {
         return roads;
+    }
+
+    public int getLongestRoad() {
+        return longestRoad;
+    }
+
+    private void computeLongestRoad(){
+        int maxConsecutiveRoads = 0;
+        for (Road startingRoad : roadsList) {
+            int consecutiveRoads = dfsCountConsecutiveRoads(startingRoad, new ArrayList<>());
+            maxConsecutiveRoads = Math.max(maxConsecutiveRoads, consecutiveRoads);
+        }
+        longestRoad = maxConsecutiveRoads;
+        System.out.println("Longest road for player " + playerName + " is " + longestRoad);
+    }
+
+    private int dfsCountConsecutiveRoads(Road currentRoad, List<Road> visitedRoads) {
+        visitedRoads.add(currentRoad);
+        int maxConsecutive = 1; // Initialize with 1 for the current road
+        List<Road> neighbors = roadsList.stream()
+                .filter(road -> road.neighbour(currentRoad))
+                .collect(Collectors.toList());
+
+        for (Road neighborRoad : neighbors) {
+            if (!visitedRoads.contains(neighborRoad)) {
+                int consecutive = 1 + dfsCountConsecutiveRoads(neighborRoad, visitedRoads);
+                maxConsecutive = Math.max(maxConsecutive, consecutive);
+            }
+        }
+        // Backtrack: Remove the current road from the visited list
+        visitedRoads.remove(currentRoad);
+        return maxConsecutive;
     }
 
     public void setRoads(int roads) {
@@ -100,7 +136,9 @@ public class CatanPlayer {
         return resourceMap;
     }
 
-    // Methods to perform actions during a player's turn (e.g., collect resources, build settlements, etc.)
+    public List<Settlement> getSettlementsList() {
+        return settlementsList;
+    }
 
     public void addResource(ResourceType resourceType, int amount) {
         // Add a specified amount of a resource to the player's inventory
@@ -120,22 +158,47 @@ public class CatanPlayer {
     }
 
     public void automateTurn() {
-        // Implement logic to automate a player's turn
-        // This method will be called when the player is an AI
-        // You can use the methods you implemented below to build settlements, roads, and cities
         simulateDelay();
         if(getResourceCount(ResourceType.LUMBER) >= 1 && getResourceCount(ResourceType.BRICK) >= 1) {
-            //buildRoad();
+            List<Road> neighborRoads = new ArrayList<>();
+            List<Road> allRoads = GameConstants.game.getRoads();
+            for(Road otherroad: allRoads){
+                for(Road road: roadsList){
+                    if(road.neighbour(otherroad)){
+                        neighborRoads.add(otherroad);
+                    }
+                }
+            }
+            Collections.shuffle(neighborRoads);
+            for(Road road: neighborRoads){
+                if(buildRoad(road)){
+                    break;
+                }
+            }
         }
 
         simulateDelay();
         if(getResourceCount(ResourceType.LUMBER) >= 1 && getResourceCount(ResourceType.BRICK) >= 1 && getResourceCount(ResourceType.WOOL) >= 1 && getResourceCount(ResourceType.GRAIN) >= 1) {
-            //buildSettlement();
+            List<Settlement> ownerlessSettlements = GameConstants.game.getSettlements().stream()
+                    .filter(settlement -> settlement.getOwner() == null).collect(Collectors.toList());
+            Collections.shuffle(ownerlessSettlements);
+            for(Settlement settlement: ownerlessSettlements){
+                if(buildSettlement(settlement)){
+                    break;
+                }
+            }
         }
 
         simulateDelay();
         if(getResourceCount(ResourceType.GRAIN) >= 2 && getResourceCount(ResourceType.ORE) >= 3) {
-            //buildCity();
+            List<Settlement> settlement = settlementsList.stream()
+                    .filter(settlement1 -> !settlement1.isCity()).collect(Collectors.toList());
+            Collections.shuffle(settlement);
+            for(Settlement settlement1: settlement){
+                if(buildCity(settlement1)){
+                    break;
+                }
+            }
         }
 
     }
@@ -163,10 +226,10 @@ public class CatanPlayer {
             removeResource(ResourceType.BRICK, 1);
             removeResource(ResourceType.WOOL, 1);
             removeResource(ResourceType.GRAIN, 1);
-            setSettlements(getSettlements() + 1);
             //add settlement to player's settlements
+            settlements += 1;
             settlement.setOwner(this);
-            addSettlement(settlement);
+            settlementsList.add(settlement);
             setScore(getScore() + 1);
             return true;
         }
@@ -177,10 +240,16 @@ public class CatanPlayer {
 
     public void addSettlement(Settlement settlement){
         settlementsList.add(settlement);
+        settlement.setOwner(this);
+        settlements += 1;
+        setScore(getScore() + 1);
     }
 
     public void addRoad(Road road){
         roadsList.add(road);
+        roads += 1;
+        road.setOwner(this);
+        computeLongestRoad();
     }
 
     public boolean buildRoad(Road road){
@@ -215,7 +284,7 @@ public class CatanPlayer {
             removeResource(ResourceType.LUMBER, 1);
             removeResource(ResourceType.BRICK, 1);
             setRoads(getRoads() + 1);
-            //add road to player's roads
+            computeLongestRoad();
             return true;
         }
         else{
@@ -223,18 +292,23 @@ public class CatanPlayer {
         }
     }
 
-    public boolean buildCity() {
+    public boolean buildCity(Settlement settlement) {
         if(getResourceCount(ResourceType.GRAIN) < 2 || getResourceCount(ResourceType.ORE) < 3) {
             return false;
         }
         //if city is can be built according to rules about cities and settlements
+        if(settlement.getOwner() != this){
+            return false;
+        }
         if(true){
             removeResource(ResourceType.GRAIN, 2);
             removeResource(ResourceType.ORE, 3);
-            setCities(getCities() + 1);
-            setSettlements(getSettlements() - 1);
+            settlement.toCity();
+            settlements -= 1;
+            cities += 1;
             //add city to player's cities
-            setScore(getScore() + 2);
+            //remove settlement score add city score
+            setScore(getScore() + 1);
             return true;
         }
         else{

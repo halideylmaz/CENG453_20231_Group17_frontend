@@ -13,7 +13,7 @@ public class CatanGame {
     private List<CatanPlayer> players;
     private int currentPlayerIndex;
     private int playerwithlongestroadIndex = -1;
-    public Hexagon[][] board;
+    private List<Hexagon> hexagons = new ArrayList<>();
     private List<Road> roads = new ArrayList<>();
     private List<Settlement> settlements = new ArrayList<>();
     public int longestRoad;
@@ -22,15 +22,11 @@ public class CatanGame {
         this.players = players;
         currentPlayerIndex = 0; // Set the starting player index
         longestRoad = 5;
-        board= new Hexagon[BOARD_SIZE][BOARD_SIZE];
     }
 
-    public void setBoard(Hexagon[][] board){
-        this.board=board;
-    }
 
-    public Hexagon[][] getBoard(){
-        return board;
+    public void addHexagon(Hexagon hexagon){
+        hexagons.add(hexagon);
     }
 
     public void setPlayers(List<CatanPlayer> players){
@@ -66,17 +62,21 @@ public class CatanGame {
         return settlements;
     }
 
+    public List<Road> getRoads() {
+        return roads;
+    }
+
     public void updateLongestRoad(){
         int max = 0;
         CatanPlayer playerwithlongestroad = null;
         for(CatanPlayer player : players){
-            if(player.getRoads() > max && player.getRoads() > longestRoad){
-                max = player.getRoads();
+            if(player.getLongestRoad() > max && player.getLongestRoad() >= longestRoad){
+                max = player.getLongestRoad();
                 playerwithlongestroad = player;
             }
         }
         if(playerwithlongestroad != null){
-            getPlayerwithLongestRoad().setScore(getPlayerwithLongestRoad().getScore() - 2);
+            if(playerwithlongestroadIndex != -1 ) getPlayerwithLongestRoad().setScore(getPlayerwithLongestRoad().getScore() - 2);
             playerwithlongestroad.setScore(playerwithlongestroad.getScore() + 2);
             playerwithlongestroadIndex = players.indexOf(playerwithlongestroad);
         }
@@ -149,5 +149,18 @@ public class CatanGame {
             }
         }
         return true;
+    }
+
+    public void handleResources(int sum){
+        for(Hexagon hexagon : hexagons){
+            if(hexagon. getNumber() == sum){
+                for(Settlement settlement : hexagon.getSettlements()){
+                    if(settlement.getOwner() != null){
+                        int amount = settlement.isCity() ? 2 : 1;
+                        settlement.getOwner().addResource(hexagon.getResourceType(), amount);
+                    }
+                }
+            }
+        }
     }
 }

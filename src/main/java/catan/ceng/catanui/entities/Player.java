@@ -18,4 +18,3 @@ public class Player {
 
 }
 
-// Add methods to modify player state based on game actions
