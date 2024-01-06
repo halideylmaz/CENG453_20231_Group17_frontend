@@ -2,6 +2,8 @@ package catan.ceng.catanui.controller;
 
 import javafx.application.Platform;
 import catan.ceng.catanui.shape.Hexagon;
+import catan.ceng.catanui.shape.Road;
+import catan.ceng.catanui.shape.Settlement;
 import catan.ceng.catanui.entities.GameConstants;
 import catan.ceng.catanui.enums.ResourceType;
 import javafx.fxml.FXML;
@@ -30,12 +32,17 @@ import catan.ceng.catanui.entities.CatanGame;
 import catan.ceng.catanui.entities.CatanPlayer;
 import catan.ceng.catanui.helper.AlertHelper;
 import catan.ceng.catanui.service.RequestService;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.paint.Color;
 
 
 @Component
 public class CatanController implements Initializable {
     private static final int BOARD_SIZE = 5;
     private static final int HEXAGON_RADIUS = 55;
+    private static final double SETTLEMENT_RADIUS = 10.0; // Adjust the size as needed
+    private static final double ROAD_WIDTH = 4.0;
     private SceneLoader sceneLoader = new SceneLoader();
     @FXML
     private BorderPane mainPane;
@@ -154,14 +161,16 @@ public class CatanController implements Initializable {
                 players.add(player3);
                 CatanPlayer player4 = new CatanPlayer("AI#3", true, "#8B4513");
                 players.add(player4);
+                player1.initialResources();
+                player2.initialResources();
+                player3.initialResources();
+                player4.initialResources();
                 GameConstants.game = new CatanGame(players);
+
                 initializeGameBoard();
                 updateResourceInfo();
                 beginturn();
             }
-    }
-
-    private void initializeDices() {
     }
 
     private void updateResourceInfo() {
@@ -281,6 +290,9 @@ public class CatanController implements Initializable {
         gameBoardPane.add(hbox, 0, 1);
         gameBoardPane.setHalignment(hbox, HPos.CENTER);
         gameBoardPane.setValignment(hbox, VPos.CENTER);
+        GameConstants.game.getSettlements().stream().forEach(settlement -> {
+           settlement.getSettlement().toFront();
+        });
 
     }
     private void addHexagon(String resource, int number, int row, int col, Pane hexagonPane) {
@@ -315,15 +327,162 @@ public class CatanController implements Initializable {
         }
 
         double hexagonY = centerY + row * (hexHeight * 0.6);
-
+        hexagonY += 60;
 
         hexagon.setLayoutX(hexagonX);
-        hexagon.setLayoutY(hexagonY + 10);
+        hexagon.setLayoutY(hexagonY);
 
         // Add hexagon to the pane
         hexagonPane.getChildren().add(hexagon);
-        //add hexagon and related information to the board array
+        // Add roads along the edges of the hexagon
+        addAllRoads(hexagonX +33 , hexagonY + 37, hexagonPane, hexagon); // Upper-left corner
+        addAllSettlements(hexagonX + 33, hexagonY + 37, hexagonPane, hexagon); // Upper-left corner
         GameConstants.game.board[row][col]=hexagon;
+    }
+
+    private void addAllSettlements(double hexagonX, double hexagonY, Pane hexagonPane, Hexagon hexagon){
+        double hexWidth = 43 * Math.sqrt(3);
+        double hexHeight = 43 * 2;
+        double x1 = hexagonX - hexWidth / 2.0;
+        double y1 = hexagonY - hexHeight / 4.0;
+
+        double x2 = hexagonX;
+        double y2 = hexagonY - hexHeight / 2.0;
+
+        double x3 = hexagonX + hexWidth / 2.0;
+        double y3 = hexagonY - hexHeight / 4.0;
+
+        double x4 = hexagonX + hexWidth / 2.0;
+        double y4 = hexagonY + hexHeight / 4.0;
+
+        double x5 = hexagonX;
+        double y5 = hexagonY + hexHeight / 2.0;
+
+        double x6 = hexagonX - hexWidth / 2.0;
+        double y6 = hexagonY + hexHeight / 4.0;
+
+        Settlement settlement1 = GameConstants.game.addSettlement(x1, y1, hexagon);
+        if(settlement1 != null){
+            hexagonPane.getChildren().add(settlement1.getSettlement());
+            settlement1.getSettlement().setOnMouseClicked(e->{
+                chooseSettlementtoBuy(settlement1);
+            });
+        }
+        Settlement settlement2 = GameConstants.game.addSettlement(x2, y2, hexagon);
+        if(settlement2 != null){
+            hexagonPane.getChildren().add(settlement2.getSettlement());
+            settlement2.getSettlement().setOnMouseClicked(e->{
+                chooseSettlementtoBuy(settlement2);
+            });
+        }
+        Settlement settlement3 = GameConstants.game.addSettlement(x3, y3, hexagon);
+        if(settlement3 != null){
+            hexagonPane.getChildren().add(settlement3.getSettlement());
+            settlement3.getSettlement().setOnMouseClicked(e->{
+                chooseSettlementtoBuy(settlement3);
+            });
+        }
+        Settlement settlement4 = GameConstants.game.addSettlement(x4, y4, hexagon);
+        if(settlement4 != null){
+            hexagonPane.getChildren().add(settlement4.getSettlement());
+            settlement4.getSettlement().setOnMouseClicked(e->{
+                chooseSettlementtoBuy(settlement4);
+            });
+        }
+        Settlement settlement5 = GameConstants.game.addSettlement(x5, y5, hexagon);
+        if(settlement5 != null){
+            hexagonPane.getChildren().add(settlement5.getSettlement());
+            settlement5.getSettlement().setOnMouseClicked(e->{
+                chooseSettlementtoBuy(settlement5);
+            });
+        }
+        Settlement settlement6 = GameConstants.game.addSettlement(x6, y6, hexagon);
+        if(settlement6 != null){
+            hexagonPane.getChildren().add(settlement6.getSettlement());
+            settlement6.getSettlement().setOnMouseClicked(e->{
+                chooseSettlementtoBuy(settlement6);
+            });
+        }
+    }
+
+    private void addAllRoads(double hexagonX, double hexagonY, Pane hexagonPane, Hexagon hexagon) {
+        double hexWidth = 43 * Math.sqrt(3);
+        double hexHeight = 43 * 2;
+
+        // Calculate coordinates for the six edges of the hexagon
+        double startX1 = hexagonX - hexWidth / 2.0;
+        double startY1 = hexagonY - hexHeight / 4.0;
+        double endX1 = hexagonX;
+        double endY1 = hexagonY - hexHeight / 2.0;
+
+        double startX2 = hexagonX;
+        double startY2 = hexagonY - hexHeight / 2.0;
+        double endX2 = hexagonX + hexWidth / 2.0;
+        double endY2 = hexagonY - hexHeight / 4;
+
+        double startX3 = hexagonX + hexWidth / 2;
+        double startY3 = hexagonY - hexHeight / 4;
+        double endX3 = hexagonX + hexWidth / 2;
+        double endY3 = hexagonY + hexHeight / 4;
+
+        double startX4 = hexagonX + hexWidth / 2;
+        double startY4 = hexagonY + hexHeight / 4;
+        double endX4 = hexagonX;
+        double endY4 = hexagonY + hexHeight / 2;
+
+        double startX5 = hexagonX;
+        double startY5 = hexagonY + hexHeight / 2;
+        double endX5 = hexagonX - hexWidth / 2;
+        double endY5 = hexagonY + hexHeight / 4;
+
+        double startX6 = hexagonX - hexWidth / 2;
+        double startY6 = hexagonY + hexHeight / 4;
+        double endX6 = hexagonX - hexWidth / 2;
+        double endY6 = hexagonY - hexHeight / 4;
+
+        // Add roads for all six edges
+        Road road1 = GameConstants.game.addRoad( startX1, startY1, endX1, endY1, hexagon);
+         if(road1!= null) {
+             hexagonPane.getChildren().add(road1.getLine());
+             road1.getLine().setOnMouseClicked(e -> {
+                 chooseRoadtoBuy(road1);
+             });
+         };
+        Road road2 = GameConstants.game.addRoad( startX2, startY2, endX2, endY2, hexagon);
+        if(road2!=null)    {hexagonPane.getChildren().add(road2.getLine());
+            road2.getLine().setOnMouseClicked(e -> {
+                chooseRoadtoBuy(road2);
+            });
+        }
+
+        Road road3 = GameConstants.game.addRoad( startX3, startY3, endX3, endY3, hexagon);
+        if(road3!=null)  {  hexagonPane.getChildren().add(road3.getLine());
+            road3.getLine().setOnMouseClicked(e -> {
+                chooseRoadtoBuy(road3);
+            });
+        }
+
+        Road road4 = GameConstants.game.addRoad( startX4, startY4, endX4, endY4, hexagon);
+        if(road4!=null)  {  hexagonPane.getChildren().add(road4.getLine());
+            road4.getLine().setOnMouseClicked(e -> {
+                chooseRoadtoBuy(road4);
+            });
+        }
+
+        Road road5 = GameConstants.game.addRoad( startX5, startY5, endX5, endY5, hexagon);
+        if(road5!=null)   { hexagonPane.getChildren().add(road5.getLine());
+            road5.getLine().setOnMouseClicked(e -> {
+                chooseRoadtoBuy(road5);
+            });
+        }
+
+        Road road6 = GameConstants.game.addRoad( startX6, startY6, endX6, endY6, hexagon);
+        if(road6!=null)  { hexagonPane.getChildren().add(road6.getLine());
+            road6.getLine().setOnMouseClicked(e -> {
+                chooseRoadtoBuy(road6);
+            });
+        }
+
     }
 
     private int calculateCols(int row) {
@@ -393,6 +552,7 @@ public class CatanController implements Initializable {
         choosingCity=false;
         choosingSettlement=false;
         choosingRoad=false;
+        GameConstants.game.updateLongestRoad();
         updateResourceInfo();
         if(GameConstants.game.isGameOver()){
             endGame();
@@ -482,15 +642,14 @@ public class CatanController implements Initializable {
         }
     }
 
-    @FXML
-    public void chooseRoadtoBuy(ActionEvent event) {
+    public void chooseRoadtoBuy(Road road) {
         if(!choosingRoad){
             return;
         }
         Window owner = GameConstants.stage.getScene().getWindow();
         CatanPlayer player = GameConstants.game.getCurrentPlayer();
         if(player.getPlayerName().equals(GameConstants.username)){
-            if(player.buildRoad()){
+            if(player.buildRoad(road)){
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Road bought",
                         "Road bought successfully");
                 //TODO: update road image
@@ -507,15 +666,14 @@ public class CatanController implements Initializable {
         }
     }
 
-    @FXML
-    public void chooseSettlementtoBuy(ActionEvent event) {
+    public void chooseSettlementtoBuy(Settlement settlement) {
         if(!choosingSettlement){
             return;
         }
         Window owner = GameConstants.stage.getScene().getWindow();
         CatanPlayer player = GameConstants.game.getCurrentPlayer();
         if (player.getPlayerName().equals(GameConstants.username)) {
-            if (player.buildSettlement()) {
+            if (player.buildSettlement(settlement)) {
                 AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Settlement bought",
                         "Settlement bought successfully");
             } else {

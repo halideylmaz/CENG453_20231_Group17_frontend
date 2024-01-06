@@ -1,8 +1,13 @@
 package catan.ceng.catanui.entities;
 
 import catan.ceng.catanui.enums.ResourceType;
+import catan.ceng.catanui.shape.Road;
+import catan.ceng.catanui.shape.Settlement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import catan.ceng.catanui.entities.GameConstants;
 
 public class CatanPlayer {
     private String playerName;
@@ -13,6 +18,8 @@ public class CatanPlayer {
     private int settlements;
     private int cities;
     private Map<ResourceType, Integer> resources; // Store the player's resource cards
+    private List<Road> roadsList = new ArrayList<>();
+    private List<Settlement> settlementsList = new ArrayList<>();
 
     public CatanPlayer(String playerName, boolean isAI, String color) {
         this.playerName = playerName;
@@ -23,6 +30,13 @@ public class CatanPlayer {
         this.settlements = 0;
         this.cities = 0;
         this.resources = initializeResourceMap();
+    }
+
+    public void initialResources(){
+        this.addResource(ResourceType.LUMBER, 3);
+        this.addResource(ResourceType.BRICK, 3);
+        this.addResource(ResourceType.GRAIN, 1);
+        this.addResource(ResourceType.WOOL, 1);
     }
 
     public Long getScore() {
@@ -111,17 +125,17 @@ public class CatanPlayer {
         // You can use the methods you implemented below to build settlements, roads, and cities
         simulateDelay();
         if(getResourceCount(ResourceType.LUMBER) >= 1 && getResourceCount(ResourceType.BRICK) >= 1) {
-            buildRoad();
+            //buildRoad();
         }
 
         simulateDelay();
         if(getResourceCount(ResourceType.LUMBER) >= 1 && getResourceCount(ResourceType.BRICK) >= 1 && getResourceCount(ResourceType.WOOL) >= 1 && getResourceCount(ResourceType.GRAIN) >= 1) {
-            buildSettlement();
+            //buildSettlement();
         }
 
         simulateDelay();
         if(getResourceCount(ResourceType.GRAIN) >= 2 && getResourceCount(ResourceType.ORE) >= 3) {
-            buildCity();
+            //buildCity();
         }
 
     }
@@ -135,18 +149,24 @@ public class CatanPlayer {
         }
     }
 
-    public boolean buildSettlement() {
+    public boolean buildSettlement(Settlement settlement) {
         if(getResourceCount(ResourceType.LUMBER) < 1 || getResourceCount(ResourceType.BRICK) < 1 || getResourceCount(ResourceType.WOOL) < 1 || getResourceCount(ResourceType.GRAIN) < 1) {
             return false;
         }
         //if settlement is can be built according to rules about roads and settlements
-        if(true){
+        if(settlement.getOwner() != null){
+            return false;
+        }
+
+        if(GameConstants.game.isSettlementPossible(settlement)){
             removeResource(ResourceType.LUMBER, 1);
             removeResource(ResourceType.BRICK, 1);
             removeResource(ResourceType.WOOL, 1);
             removeResource(ResourceType.GRAIN, 1);
             setSettlements(getSettlements() + 1);
             //add settlement to player's settlements
+            settlement.setOwner(this);
+            addSettlement(settlement);
             setScore(getScore() + 1);
             return true;
         }
@@ -155,18 +175,47 @@ public class CatanPlayer {
         }
     }
 
-    public boolean buildRoad() {
+    public void addSettlement(Settlement settlement){
+        settlementsList.add(settlement);
+    }
+
+    public void addRoad(Road road){
+        roadsList.add(road);
+    }
+
+    public boolean buildRoad(Road road){
 
         if(getResourceCount(ResourceType.LUMBER) < 1 || getResourceCount(ResourceType.BRICK) < 1) {
             return false;
         }
+        if(road.getOwner() != null){
+            return false;
+        }
         //if road is can be built according to rules about roads and settlements
-        if(true){
+        boolean canBuild = false;
+        for(Road r : roadsList){
+            if(r.neighbour(road)){
+                canBuild = true;
+                break;
+            }
+        }
+
+        if(!canBuild){
+            for(Settlement s : settlementsList){
+                if(road.neighbour(s)){
+                    canBuild = true;
+                    break;
+                }
+            }
+        }
+
+        if(canBuild){
+            roadsList.add(road);
+            road.setOwner(this);
             removeResource(ResourceType.LUMBER, 1);
             removeResource(ResourceType.BRICK, 1);
             setRoads(getRoads() + 1);
             //add road to player's roads
-            //if longest road is achieved update score and longest road owner
             return true;
         }
         else{
