@@ -39,7 +39,47 @@ import javafx.scene.paint.Color;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-
+/**
+ * The controller class for the Catan game, responsible for managing the game logic and user interface interactions.
+ * This class handles player turns, dice rolling, resource distribution, and various player actions such as buying roads,
+ * settlements, and cities. Additionally, it facilitates the transition between game phases and provides a graphical
+ * representation of the game board.
+ *
+ * <p>The CatanController class interacts with the GameConstants, RequestService, and AlertHelper classes to manage
+ * game-specific constants, communicate with a server for score updates, and display alert messages, respectively.</p>
+ *
+ * <p>The methods within this class handle various aspects of the game, such as starting and ending turns, buying roads,
+ * settlements, and cities, and transitioning between game phases. Player actions are facilitated through the use of
+ * JavaFX buttons and alerts, providing a responsive and interactive user interface.</p>
+ *
+ * <p>Key methods include {@code beginturn()}, {@code endTurn()}, and methods associated with buying roads, settlements,
+ * and cities. These methods incorporate multithreading for AI turns and UI updates to maintain a smooth gaming experience.</p>
+ *
+ * <p>The controller also ensures that the game ends appropriately, updating scores on the server and displaying the winner
+ * in an alert. Scene transitions are handled through the {@code switchtoplaymenu()} method, which sets the game instance
+ * to null and loads the playmenu.fxml file for returning to the main menu.</p>
+ *
+ * <p>This class relies on a GameConstants instance to store game-related constants, a RequestService instance to interact
+ * with a server for score updates, and an AlertHelper class for displaying alert messages in the UI.</p>
+ *
+ * @see GameConstants
+ * @see RequestService
+ * @see AlertHelper
+ * @see CatanPlayer
+ * @see Road
+ * @see Settlement
+ * @see javafx.scene.control.Alert
+ * @see javafx.event.ActionEvent
+ * @see javafx.fxml.FXML
+ * @see javafx.scene.image.ImageView
+ * @see javafx.scene.layout.HBox
+ * @see javafx.scene.control.Label
+ * @see javafx.geometry.Pos
+ * @see javafx.geometry.HPos
+ * @see javafx.geometry.VPos
+ * @see javafx.application.Platform
+ * @see java.lang.Thread
+ */
 @Component
 public class CatanController implements Initializable {
     private static final int BOARD_SIZE = 5;
@@ -155,6 +195,13 @@ public class CatanController implements Initializable {
     private boolean choosingCity = false;
     private Pane hexagonPane;
 
+    /**
+     * Initializes the Catan game interface. If playing against AI, sets up players, initializes resources, game board,
+     * and starts the first turn.
+     *
+     * @param url            The location used to resolve relative paths for the root object, or {@code null} if the location is not known.
+     * @param resourceBundle The resources for the root object, or {@code null} if the root object was not created from an FXML file.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
             if (GameConstants.vsAI) {
@@ -179,6 +226,10 @@ public class CatanController implements Initializable {
             }
     }
 
+    /**
+     * Assigns random roads and settlements to players at the beginning of the game.
+     * Randomly selects settlements and associated roads for each player.
+     */
     private void giveRandomRoadandSettlement(){
         List<Settlement> settlements = new ArrayList<>();
         settlements.addAll(GameConstants.game.getSettlements());
@@ -228,6 +279,10 @@ public class CatanController implements Initializable {
         GameConstants.game.getPlayers().get(3).addRoad(road3);
     }
 
+    /**
+     * Updates the resource information in the UI, including longest road, player names, scores, cities, settlements, roads,
+     * and individual resource counts for each player.
+     */
     private void updateResourceInfo() {
         if(GameConstants.game.getPlayerwithLongestRoad() == null){
             longestroad.setText("No one has longest road yet");
@@ -297,6 +352,10 @@ public class CatanController implements Initializable {
 
     }
 
+    /**
+     * Initializes the game board interface by adding hexagons, settlements, roads, and other UI elements.
+     * Also sets up resource tiles, numbers, and initializes the game board's hexagon array.
+     */
     @FXML
     private void initializeGameBoard() {
         hexagonPane = new Pane();
@@ -350,6 +409,16 @@ public class CatanController implements Initializable {
         });
 
     }
+
+    /**
+     * Adds a hexagon to the game board with the specified resource type, number, row, and column.
+     *
+     * @param resource      The type of resource the hexagon represents.
+     * @param number        The number associated with the hexagon, indicating the roll that triggers resource collection.
+     * @param row           The row index of the hexagon on the game board.
+     * @param col           The column index of the hexagon on the game board.
+     * @param hexagonPane   The JavaFX pane where the hexagon is added.
+     */
     private void addHexagon(String resource, int number, int row, int col, Pane hexagonPane) {
         Hexagon hexagon = new Hexagon(resource, number);
 
@@ -396,6 +465,15 @@ public class CatanController implements Initializable {
         GameConstants.game.addHexagon(hexagon);
     }
 
+    /**
+     * Adds all settlements to a hexagon on the game board, considering the hexagon's position.
+     * Associates each settlement with the hexagon and handles mouse events for settlement purchase.
+     *
+     * @param hexagonX      The x-coordinate of the hexagon's center.
+     * @param hexagonY      The y-coordinate of the hexagon's center.
+     * @param hexagonPane   The JavaFX pane where the hexagon is located.
+     * @param hexagon       The hexagon to which settlements are added.
+     */
     private void addAllSettlements(double hexagonX, double hexagonY, Pane hexagonPane, Hexagon hexagon){
         double hexWidth = 43 * Math.sqrt(3);
         double hexHeight = 43 * 2;
@@ -467,6 +545,15 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Adds all roads to a hexagon on the game board, considering the hexagon's position.
+     * Associates each road with the hexagon and handles mouse events for road purchase.
+     *
+     * @param hexagonX      The x-coordinate of the hexagon's center.
+     * @param hexagonY      The y-coordinate of the hexagon's center.
+     * @param hexagonPane   The JavaFX pane where the hexagon is located.
+     * @param hexagon       The hexagon to which roads are added.
+     */
     private void addAllRoads(double hexagonX, double hexagonY, Pane hexagonPane, Hexagon hexagon) {
         double hexWidth = 43 * Math.sqrt(3);
         double hexHeight = 43 * 2;
@@ -547,6 +634,12 @@ public class CatanController implements Initializable {
 
     }
 
+    /**
+     * Calculates the number of columns based on the given row for hexagon layout.
+     *
+     * @param row The row index on the game board.
+     * @return The number of columns corresponding to the given row.
+     */
     private int calculateCols(int row) {
         switch (row) {
             case 0:
@@ -562,6 +655,12 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Simulates rolling two dice, displays the rolled dice images on the game board,
+     * and returns the sum of the dice.
+     *
+     * @return The sum of the two rolled dice.
+     */
     private int handleRollDice() {
         /* TODO if player's turn */
         int die1= (int) (Math.random()*6)+1;
@@ -580,6 +679,10 @@ public class CatanController implements Initializable {
         return die1+die2;
     }
 
+    /**
+     * Ends the game, identifies the winner, updates scores to the server,
+     * and displays an information alert with the winner's name.
+     */
     private void endGame() {
         CatanPlayer winner = GameConstants.game.getPlayerwithHighestScore();
         Window owner = GameConstants.stage.getScene().getWindow();
@@ -610,6 +713,11 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Initiates a player's turn, handling various game actions such as rolling dice,
+     * distributing resources, updating longest road, and processing AI turns.
+     * If the game is over, it triggers the endGame() method.
+     */
     private void beginturn(){
         choosingCity=false;
         choosingSettlement=false;
@@ -650,11 +758,21 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Ends the current player's turn and initiates the next turn by calling beginturn().
+     */
     private void endTurn(){
         GameConstants.game.endTurn();
         beginturn();
     }
 
+    /**
+     * Handles the action when the end turn button is pressed.
+     * If it is the player's turn, it calls the endTurn() method.
+     * Otherwise, it shows an error alert indicating that it's not the player's turn.
+     *
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     public void endturnbutton(ActionEvent event) {
         Window owner = GameConstants.stage.getScene().getWindow();
@@ -667,6 +785,13 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Handles the action when the buy road button is pressed.
+     * If it is the player's turn, it shows an information alert to choose a road to buy and sets choosingRoad to true.
+     * Otherwise, it shows an error alert indicating that it's not the player's turn.
+     *
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     public void buyRoadbutton(ActionEvent event) {
         Window owner = GameConstants.stage.getScene().getWindow();
@@ -681,6 +806,13 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Handles the action when the buy settlement button is pressed.
+     * If it is the player's turn, it shows an information alert to choose a settlement to buy and sets choosingSettlement to true.
+     * Otherwise, it shows an error alert indicating that it's not the player's turn.
+     *
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     public void buySettlementbutton(ActionEvent event) {
         Window owner = GameConstants.stage.getScene().getWindow();
@@ -695,6 +827,13 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Handles the action when the buy city button is pressed.
+     * If it is the player's turn, it shows an information alert to choose a settlement to upgrade to a city and sets choosingCity to true.
+     * Otherwise, it shows an error alert indicating that it's not the player's turn.
+     *
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     public void buyCitybutton(ActionEvent event) {
         Window owner = GameConstants.stage.getScene().getWindow();
@@ -709,6 +848,13 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Handles the selection of a road for purchase during the player's turn.
+     * If choosingRoad is true, it attempts to build the road using the player's buildRoad method.
+     * Shows appropriate alert messages based on the success or failure of the road construction.
+     *
+     * @param road The Road object selected for purchase.
+     */
     public void chooseRoadtoBuy(Road road) {
         if(!choosingRoad){
             return;
@@ -733,6 +879,13 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Handles the selection of a settlement for purchase during the player's turn.
+     * If choosingSettlement is true, it attempts to build the settlement using the player's buildSettlement method.
+     * Shows appropriate alert messages based on the success or failure of the settlement construction.
+     *
+     * @param settlement The Settlement object selected for purchase.
+     */
     public void chooseSettlementtoBuy(Settlement settlement) {
         if(!choosingSettlement){
             return;
@@ -755,6 +908,13 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Handles the selection of a settlement for upgrading to a city during the player's turn.
+     * If choosingCity is true, it attempts to build the city using the player's buildCity method.
+     * Shows appropriate alert messages based on the success or failure of the city upgrade.
+     *
+     * @param settlement The Settlement object selected for upgrading to a city.
+     */
     public void chooseCitytoBuy(Settlement settlement) {
         if(!choosingCity){
             return;
@@ -779,6 +939,12 @@ public class CatanController implements Initializable {
         }
     }
 
+    /**
+     * Switches the scene to the play menu, setting the GameConstants.game to null.
+     * Loads the playmenu.fxml file to switch the view.
+     *
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     public void switchtoplaymenu(ActionEvent event) {
         GameConstants.game = null;

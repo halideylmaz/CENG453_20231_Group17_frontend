@@ -21,14 +21,25 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This service class handles HTTP requests to a RESTful API for user login using the OkHttpClient library.
+ * It sends a POST request with JSON data to the specified URL and handles the response.
+ */
 @Service
 @Slf4j
 public class RequestService {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final OkHttpClient client = new OkHttpClient();
 
-    private static String REST_URL = "http://127.0.0.1:8080/";
+    // The base URL for the REST API
+    private static String REST_URL="http://127.0.0.1:8080/";
 
+    /**
+     * Attempts to log in a player by sending a POST request to the login API.
+     *
+     * @param player The player object containing username and password for login.
+     * @return True if the login is successful, false otherwise, or null in case of an exception.
+     */
     @SneakyThrows
     public Boolean login(Player player) {
         try {
@@ -90,7 +101,12 @@ public class RequestService {
         }
     }
 
-
+    /**
+     * Attempts to register a new player by sending a POST request to the registration API.
+     *
+     * @param player The player object containing username, email, and password for registration.
+     * @return True if the registration is successful, false otherwise, or null in case of an exception.
+     */
     @SneakyThrows
     public Boolean register(Player player) {
         try {
@@ -143,6 +159,12 @@ public class RequestService {
         }
     }
 
+    /**
+     * Sends a request to reset the user's password by sending a POST request to the reset password API.
+     *
+     * @param email The email address of the user for password reset.
+     * @return True if the reset email is sent successfully, false otherwise, or false in case of an exception.
+     */
     @SneakyThrows
     public Boolean sendResetEmail(String email) {
         try {
@@ -192,6 +214,13 @@ public class RequestService {
         }
     }
 
+    /**
+     * Sends a request to reset the user's password by sending a POST request to the reset password API.
+     *
+     * @param token       The token received in the password reset email.
+     * @param newPassword The new password to be set.
+     * @return True if the password is reset successfully, false otherwise, or false in case of an exception.
+     */
     @SneakyThrows
     public Boolean resetPassword(String token, String newPassword) {
         try {
@@ -232,6 +261,12 @@ public class RequestService {
         }
     }
 
+    /**
+     * Retrieves the scoreboard data from the server based on the specified time frame.
+     *
+     * @param time The time frame for which the scoreboard data should be retrieved (e.g., "weekly" or "monthly").
+     * @return A JSON string representing the scoreboard data if successful, or null in case of an exception.
+     */
     public String getScoreboard(String time) {
         try {
             String leaderBoardURL = REST_URL + "leaderboard";
@@ -273,7 +308,12 @@ public class RequestService {
         }
     }
 
-
+    /**
+     * Sends a request to add a new score to the server.
+     *
+     * @param userName The name of the user who achieved the score.
+     * @param score    The score achieved by the user.
+     */
     public void addScore(String userName, String score) {
         try {
 

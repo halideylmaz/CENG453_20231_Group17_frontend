@@ -16,6 +16,11 @@ import catan.ceng.catanui.entities.GameConstants;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * This class is a Spring component that initializes the JavaFX stage when a {@link StageReadyEvent} is triggered.
+ * It loads the main FXML resource and sets up the JavaFX stage with the loaded content.
+ * Implements the {@link ApplicationListener} interface to listen for stage readiness events.
+ */
 @Component
 @Slf4j
 public class StageInitializer implements ApplicationListener<StageReadyEvent> {
@@ -23,6 +28,12 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     @Value("classpath:/fxml/mainmenu.fxml")
     private URL mainResource;
 
+    /**
+     * Called when a {@link StageReadyEvent} is published, indicating that the JavaFX stage is ready.
+     * It loads the main FXML resource, sets up the stage, and displays it.
+     *
+     * @param event The {@link StageReadyEvent} triggered when the stage is ready.
+     */
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
         try {

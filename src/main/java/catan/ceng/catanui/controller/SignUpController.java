@@ -8,7 +8,21 @@ import javafx.scene.control.*;
 import javafx.stage.Window;
 import org.springframework.stereotype.Component;
 import javafx.event.ActionEvent;
-
+/**
+ * The `SignUpController` class is responsible for controlling the sign-up form UI and handling user sign-up actions.
+ * It validates user input, communicates with the backend for user registration, and navigates between scenes.
+ *
+ * <p>This class is marked as a Spring component using the {@code @Component} annotation, allowing it to be managed
+ * by the Spring application context.
+ *
+ * <p>Usage:
+ * <pre>{@code
+ * SignUpController signUpController = new SignUpController();
+ * signUpController.handleSignUp();
+ * }</pre>
+ *
+ * @see org.springframework.stereotype.Component
+ */
 @Component
 public class SignUpController {
 
@@ -28,6 +42,10 @@ public class SignUpController {
     @FXML
     private Button signUpButton;
 
+    /**
+     * Handles the sign-up action when the "Sign Up" button is clicked.
+     * It validates user input, registers the user, and navigates to the main menu upon successful registration.
+     */
     @FXML
     public void handleSignUp() {
         String username = usernameField.getText();
@@ -77,12 +95,22 @@ public class SignUpController {
         }
     }
 
+    /**
+     * Switches to the login scene when the "Login" button is clicked.
+     *
+     * @param event The action event triggered by clicking the "Login" button.
+     */
     @FXML
     public void switchToLogin(ActionEvent event) {
 
         SceneLoader.loadFXML("/fxml/login.fxml");
     }
 
+    /**
+     * Switches to the main menu scene when the "Main Menu" button is clicked.
+     *
+     * @param event The action event triggered by clicking the "Main Menu" button.
+     */
     @FXML
     public void switchToMainMenu(ActionEvent event) {
 
