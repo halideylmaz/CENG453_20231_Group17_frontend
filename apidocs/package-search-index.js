@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"catan.ceng.catanui"},{"l":"catan.ceng.catanui.application"},{"l":"catan.ceng.catanui.controller"},{"l":"catan.ceng.catanui.entities"},{"l":"catan.ceng.catanui.enums"},{"l":"catan.ceng.catanui.helper"},{"l":"catan.ceng.catanui.service"},{"l":"catan.ceng.catanui.shape"}];updateSearchResults();

@@ -16,7 +16,7 @@ public class SceneLoader {
     /**
      * Loads an FXML file and sets it as the scene for the current JavaFX stage.
      *
-     * @param fxmlFilePath The path to the FXML file to load.
+     * @param fxmlfilepath The path to the FXML file to load.
      */
     public void loadFXML(String fxmlfilepath) {
         try {

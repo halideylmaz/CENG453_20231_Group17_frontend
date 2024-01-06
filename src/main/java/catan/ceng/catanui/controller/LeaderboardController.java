@@ -28,9 +28,7 @@ import java.util.List;
  * leaderboardController.initialize();
  * }</pre>
  *
- * @see org.springframework.stereotype.Component
  */
-@Component
 public class LeaderboardController {
 
     private SceneLoader sceneLoader = new SceneLoader();

@@ -21,9 +21,8 @@ import javafx.stage.Window;
  * resetPasswordController.sendResetPasswordEmail();
  * }</pre>
  *
- * @see org.springframework.stereotype.Component
  */
-@Component
+
 public class ResetPasswordController {
 
     @FXML
