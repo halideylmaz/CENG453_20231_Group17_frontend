@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="catan.ceng.catanui.controller.LeaderboardController"
+      alignment="CENTER"
+      spacing="20"
+      style="-fx-background-color: #eefbfb;">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <HBox alignment="CENTER_RIGHT">
+    <Button text="Back to Main Menu" onAction="#switchToMainMenu"
+            style="-fx-font-size: 12; -fx-min-width: 100; -fx-padding: 10; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-border-radius: 5;"/>
+    </HBox>
+
+    <Label text="Leaderboard" style="-fx-font-size: 24;" />
+
+    <!-- Tabs for Weekly, Monthly, and All Time Leaderboards -->
+    <TabPane tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Weekly">
+                <VBox spacing="10">
+                    <!-- Table View for Weekly Leaderboard -->
+                    <TableView fx:id="weeklyLeaderboardTable">
+                        <!-- Columns: Place, Player Name, Score -->
+                        <columns>
+                            <TableColumn text="Username" prefWidth="300" />
+                            <TableColumn text="Score" prefWidth="300" />
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+
+            <Tab text="Monthly">
+                <VBox spacing="10">
+                    <!-- Table View for Monthly Leaderboard -->
+                    <TableView fx:id="monthlyLeaderboardTable">
+                        <!-- Columns: Place, Player Name, Score -->
+                        <columns>
+                            <TableColumn text="Username" prefWidth="300"/>
+                            <TableColumn text="Score" prefWidth="300"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+
+            <Tab text="All Time">
+                <VBox spacing="10">
+                    <!-- Table View for All Time Leaderboard -->
+                    <TableView fx:id="allTimeLeaderboardTable">
+                        <!-- Columns: Place, Player Name, Score -->
+                        <columns>
+                            <TableColumn text="Username" prefWidth="300"/>
+                            <TableColumn text="Score" prefWidth="300"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+        </tabs>
+    </TabPane>
+
+</VBox>

@@ -6,7 +6,10 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="catan.ceng.catanui.controller.LoginController">
+      fx:controller="catan.ceng.catanui.controller.LoginController"
+      alignment="CENTER"
+      spacing="30"
+      style="-fx-background-color: #eefbfb;">
 
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -14,13 +17,25 @@
 
     <Label text="Login" style="-fx-font-size: 18;"/>
 
-    <Label text="Username:"/>
-    <TextField fx:id="usernameField" />
+    <VBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Username:" />
+        <TextField fx:id="usernameField" />
+    </VBox>
+    <VBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Password:" />
+        <PasswordField fx:id="passwordField" />
+    </VBox>
 
-    <Label text="Password:"/>
-    <PasswordField fx:id="passwordField" />
+    <VBox spacing="10" alignment="CENTER">
+    <Button text="Login" fx:id="loginButton" onAction="#handleLogin"
+            style="-fx-font-size: 12; -fx-min-width: 150; -fx-padding: 10; -fx-background-color: rgb(82, 168, 57);-fx-text-fill: white; -fx-border-radius: 5;"/>
 
-    <Button text="Login" fx:id="loginButton" onAction="#handleLogin"/>
+        <Label fx:id="errorMessageLabel" textFill="red"/>
     <Hyperlink text="Don't have an account? Sign up!" onAction="#switchToSignUp"/>
+    </VBox>
+    <HBox alignment="CENTER_RIGHT">
+        <Button text="Back to Main Menu" onAction="#switchToMainMenu"
+                style="-fx-font-size: 12; -fx-min-width: 100; -fx-padding: 10; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-border-radius: 5;"/>
+    </HBox>
 
 </VBox>
