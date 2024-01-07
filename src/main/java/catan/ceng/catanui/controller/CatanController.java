@@ -766,6 +766,12 @@ public class CatanController implements Initializable {
         beginturn();
     }
 
+
+    @FXML
+    public void finishGameEarlyButton(ActionEvent event) {
+        endGame();
+    }
+
     /**
      * Handles the action when the end turn button is pressed.
      * If it is the player's turn, it calls the endTurn() method.
